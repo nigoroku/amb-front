@@ -1,17 +1,38 @@
 <template>
-  <a-list item-layout="vertical" size="large" :pagination="pagination" :data-source="listData">
-    <a-list-item slot="renderItem" key="item.title" slot-scope="item, index">
+  <a-list
+    item-layout="vertical"
+    size="large"
+    :pagination="pagination"
+    :data-source="listData"
+  >
+    <a-list-item
+      slot="renderItem"
+      key="item.account_name"
+      slot-scope="item, index"
+    >
       <template v-for="{ type, text } in actions" slot="actions">
         <span :key="type">
           <a-icon :type="type" style="margin-right: 8px" />
           {{ text }}
         </span>
       </template>
-      <a-list-item-meta :description="item.description">
-        <a slot="title" :href="item.href">{{ item.title }}</a>
+      <a-list-item-meta :description="item.summary">
+        <a slot="title" :href="item.href">{{ item.account_name }}</a>
         <a-avatar slot="avatar" :src="item.avatar" />
       </a-list-item-meta>
-      {{ item.content }}
+      <div v-if="item.output_page">
+        <a v-bind:href="item.output_page.url" target="_blank">
+          <a-card class="ref-link">
+            <div class="ref-link-body">
+              <div>
+                <h3>{{ item.output_page.title }}</h3>
+                <span>{{ item.output_page.description }}</span>
+              </div>
+              <img v-bind:src="item.output_page.image_url" />
+            </div>
+          </a-card>
+        </a>
+      </div>
     </a-list-item>
   </a-list>
 </template>
@@ -57,10 +78,18 @@ export default {
         boad_list.forEach((l) => {
           let list = {};
           let user = l.user;
-          list.title = user.account_name;
-          list.description = user.introduction;
+          let output = l.output_list;
+          let output_page = l.output_page_summary;
+          list.account_name = user.account_name;
+          if (output != null) {
+            list.summary = output.summary;
+          }
+          if (output_page.image_url) {
+            list.output_page = output_page;
+          }
           self.listData.push(list);
 
+          // 顔写真の読み込み
           if (user.account_img != null) {
             var reader = new FileReader();
             reader.onload = function (e) {
@@ -85,17 +114,21 @@ export default {
       })
       .catch(function () {})
       .finally(function () {});
-
-    // this.listData.push({
-    //   title: `ant design vue part`,
-    //   avatar:
-    //     "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-    //   description:
-    //     "Ant Design, a design language for background applications, is refined by Ant UED Team.",
-    //   content:
-    //     "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
-    // });
   },
 };
 </script>
-<style></style>
+<style lang="scss" scoped>
+.ref-link {
+  width: 100%;
+
+  &:hover {
+    background: #efefef;
+  }
+
+  .ref-link-body {
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+  }
+}
+</style>
