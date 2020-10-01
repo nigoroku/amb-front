@@ -1,6 +1,11 @@
 <template>
   <a-layout-header
-    style="background: #fff; padding: 0;display:flex;justify-content: space-between;"
+    style="
+      background: #fff;
+      padding: 0;
+      display: flex;
+      justify-content: space-between;
+    "
   >
     <div>
       <a-icon
@@ -17,27 +22,49 @@
       </a-button>
     </div>
     <div :style="{ textAlign: 'right' }">
-      <a-dropdown v-show="auth" style="margin-right:20px;">
-        <a class="ant-dropdown-link" style="display:flex;" @click="e => e.preventDefault()">
-          <!-- <img class="photo-to-circle" src="@/assets/img/no_photo.png" /> -->
-          <div style="padding-top: 10px;margin-right:5px;">
-            <div class="photo-to-circle"></div>
-          </div>
-          <span>{{ this.accountName }}</span>
-          <a-icon type="down" style="margin-left:5px;padding-top: 27px;" />
-        </a>
-        <a-menu slot="overlay">
-          <a-menu-item>
-            <a class="login-btn" @click="showAccountModal" :style="{color: 'black'}">アカウント</a>
-          </a-menu-item>
-          <a-menu-item>
-            <a class="login-btn" @click="logout" :style="{color: 'black'}">ログアウト</a>
-          </a-menu-item>
-        </a-menu>
-      </a-dropdown>
-
-      <nuxt-link class="login-btn" v-show="!auth" to="/" :style="{color: 'black'}">Log in</nuxt-link>
-      <a-button type="danger" v-show="!auth" :style="{ padding:'5px 8px',margin:'0px 15px' }">
+      <div v-show="auth">
+        <a-dropdown style="margin-right: 20px">
+          <a
+            class="ant-dropdown-link"
+            style="display: flex"
+            @click="(e) => e.preventDefault()"
+          >
+            <!-- <img class="photo-to-circle" src="@/assets/img/no_photo.png" /> -->
+            <div style="padding-top: 10px; margin-right: 5px">
+              <div class="photo-to-circle"></div>
+            </div>
+            <span>{{ this.accountName }}</span>
+            <a-icon type="down" style="margin-left: 5px; padding-top: 27px" />
+          </a>
+          <a-menu slot="overlay">
+            <a-menu-item>
+              <a
+                class="login-btn"
+                @click="showAccountModal"
+                :style="{ color: 'black' }"
+                >アカウント</a
+              >
+            </a-menu-item>
+            <a-menu-item>
+              <a class="login-btn" @click="logout" :style="{ color: 'black' }"
+                >ログアウト</a
+              >
+            </a-menu-item>
+          </a-menu>
+        </a-dropdown>
+      </div>
+      <nuxt-link
+        class="login-btn"
+        v-show="!auth"
+        to="/"
+        :style="{ color: 'black' }"
+        >Log in</nuxt-link
+      >
+      <a-button
+        type="danger"
+        v-show="!auth"
+        :style="{ padding: '5px 8px', margin: '0px 15px' }"
+      >
         <nuxt-link to="/signup">Sign up</nuxt-link>
       </a-button>
     </div>
@@ -90,6 +117,10 @@ export default {
   mounted: function () {
     this.$store.commit("setAccountName", Cookie.get("accountName"));
 
+    if (this.getUserId == null) {
+      return;
+    }
+
     let self = this;
     this.$http(process.env.userApiEndpoit)
       .get("/api/v1/user/account?user_id=" + this.getUserId)
@@ -108,16 +139,20 @@ export default {
           });
         };
 
-        var createPngFile4Base64 = function (base64, name) {
+        var createPngFile4Base64 = function (base64, name, content_type) {
           var bin = atob(base64.replace(/^.*,/, ""));
           var buffer = new Uint8Array(bin.length);
           for (var i = 0; i < bin.length; i++) {
             buffer[i] = bin.charCodeAt(i);
           }
-          return new File([buffer.buffer], name, { type: "image/png" });
+          return new File([buffer.buffer], name, { type: content_type });
         };
 
-        let file = createPngFile4Base64(account.account_img, "tmp");
+        let file = createPngFile4Base64(
+          account.account_img,
+          "tmp",
+          account.content_type
+        );
 
         // ファイル読み込みを実行
         reader.readAsDataURL(file);

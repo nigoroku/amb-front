@@ -12,10 +12,11 @@
           {{ text }}
         </span>
       </template>
-      <a-list-item-meta :description="item.summary">
+      <a-list-item-meta :description="item.introduction">
         <a slot="title" :href="item.href">{{ item.account_name }}</a>
         <a-avatar slot="avatar" :src="item.avatar" />
       </a-list-item-meta>
+      <p>{{ item.summary }}</p>
       <div v-if="item.output_page">
         <a v-bind:href="item.output_page.url" target="_blank">
           <a-card class="ref-link">
@@ -64,34 +65,41 @@ export default {
           let output = l.output_list;
           let output_page = l.output_page_summary;
           list.account_name = user.account_name;
+          list.introduction = user.introduction;
           if (output != null) {
             list.summary = output.summary;
           }
           if (output_page.image_url) {
             list.output_page = output_page;
           }
-          self.listData.push(list);
 
           // 顔写真の読み込み
           if (user.account_img != null) {
             var reader = new FileReader();
             reader.onload = function (e) {
               list.avatar = e.target.result;
+              self.listData.push(list);
             };
 
-            var createPngFile4Base64 = function (base64, name) {
+            var createFile4Base64 = function (base64, name, content_type) {
               var bin = atob(base64.replace(/^.*,/, ""));
               var buffer = new Uint8Array(bin.length);
               for (var i = 0; i < bin.length; i++) {
                 buffer[i] = bin.charCodeAt(i);
               }
-              return new File([buffer.buffer], name, { type: "image/png" });
+              return new File([buffer.buffer], name, { type: content_type });
             };
 
-            let file = createPngFile4Base64(user.account_img, "tmp");
+            let file = createFile4Base64(
+              user.account_img,
+              "tmp",
+              user.content_type
+            );
 
             // ファイル読み込みを実行
             reader.readAsDataURL(file);
+          } else {
+            self.listData.push(list);
           }
         });
       })
@@ -113,5 +121,15 @@ export default {
     justify-content: space-between;
     cursor: pointer;
   }
+}
+
+.ant-avatar {
+  background-image: url("../assets/img/no_photo.png");
+  background-size: cover;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background-position: left top;
+  border: 2px solid #f3f3f3;
 }
 </style>

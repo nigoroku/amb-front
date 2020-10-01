@@ -14,6 +14,9 @@ export const state = () => ({
 
 export const getters = {
   getUserId: state => {
+    if (state.auth == null) {
+      return null;
+    }
     let payLoad = state.auth.accessToken.split(".")[1];
     return JSON.parse(atob(payLoad)).id;
   }

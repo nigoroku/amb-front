@@ -22,16 +22,24 @@
                 class="camera-icon"
                 @click="openFile"
                 type="camera"
-                :style="{fontSize : '30px', color : '#fff'}"
+                :style="{ fontSize: '30px', color: '#fff' }"
               />
             </div>
           </div>
         </div>
         <a-form-model-item label="アカウント名">
-          <a-input placeholder="account name..." v-model="accountForm.account_name" type="text"></a-input>
+          <a-input
+            placeholder="account name..."
+            v-model="accountForm.account_name"
+            type="text"
+          ></a-input>
         </a-form-model-item>
         <a-form-model-item label="email">
-          <a-input placeholder="email..." v-model="accountForm.email" type="email"></a-input>
+          <a-input
+            placeholder="email..."
+            v-model="accountForm.email"
+            type="email"
+          ></a-input>
         </a-form-model-item>
         <a-form-model-item label="紹介文">
           <a-input
@@ -44,7 +52,13 @@
     </section>
     <template slot="footer">
       <a-button key="back" @click="handleCancel">キャンセル</a-button>
-      <a-button key="submit" type="primary" :loading="confirmLoading" @click="handleOk">更新する</a-button>
+      <a-button
+        key="submit"
+        type="primary"
+        :loading="confirmLoading"
+        @click="handleOk"
+        >更新する</a-button
+      >
     </template>
   </a-modal>
 </template>
@@ -52,6 +66,8 @@
 import MultipleTagSelect from "@/components/MultipleTagSelect";
 import InputField from "@/components/InputField";
 import { mapState, mapGetters } from "vuex";
+
+const Cookie = process.client ? require("js-cookie") : undefined;
 
 export default {
   name: "AccountModal",
@@ -96,7 +112,7 @@ export default {
           },
         })
         .then(function (response) {
-          self.$store.commit("setAccountName", self.accountForm.account_name);
+          Cookie.set("accountName", account.account_name);
         })
         .catch(function () {})
         .finally(function () {
@@ -159,16 +175,20 @@ export default {
           });
         };
 
-        var createPngFile4Base64 = function (base64, name) {
+        var createPngFile4Base64 = function (base64, name, content_type) {
           var bin = atob(base64.replace(/^.*,/, ""));
           var buffer = new Uint8Array(bin.length);
           for (var i = 0; i < bin.length; i++) {
             buffer[i] = bin.charCodeAt(i);
           }
-          return new File([buffer.buffer], name, { type: "image/png" });
+          return new File([buffer.buffer], name, { type: content_type });
         };
 
-        let file = createPngFile4Base64(account.account_img, "tmp");
+        let file = createPngFile4Base64(
+          account.account_img,
+          "tmp",
+          account.content_type
+        );
 
         // ファイル読み込みを実行
         reader.readAsDataURL(file);
