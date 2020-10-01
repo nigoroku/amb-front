@@ -16,15 +16,15 @@
         <a slot="title" :href="item.href">{{ item.account_name }}</a>
         <a-avatar slot="avatar" :src="item.avatar" />
       </a-list-item-meta>
-      <div v-if="item.output_page">
-        <a v-bind:href="item.output_page.url" target="_blank">
+      <div v-if="item.input_page">
+        <a v-bind:href="item.input_page.url" target="_blank">
           <a-card class="ref-link">
             <div class="ref-link-body">
               <div>
-                <h3>{{ item.output_page.title }}</h3>
-                <span>{{ item.output_page.description }}</span>
+                <h3>{{ item.input_page.title }}</h3>
+                <span>{{ item.input_page.description }}</span>
               </div>
-              <img v-bind:src="item.output_page.image_url" />
+              <img v-bind:src="item.input_page.image_url" />
             </div>
           </a-card>
         </a>
@@ -61,14 +61,14 @@ export default {
         boad_list.forEach((l) => {
           let list = {};
           let user = l.user;
-          let output = l.output_list;
-          let output_page = l.output_page_summary;
+          let input = l.input_list;
+          let input_page = l.input_page_summary;
           list.account_name = user.account_name;
-          if (output != null) {
-            list.summary = output.summary;
+          if (input != null) {
+            list.summary = input.summary;
           }
-          if (output_page.image_url) {
-            list.output_page = output_page;
+          if (input_page.image_url) {
+            list.input_page = input_page;
           }
           self.listData.push(list);
 

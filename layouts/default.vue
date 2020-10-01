@@ -1,5 +1,5 @@
 <template>
-  <a-layout id="components-layout-demo-custom-trigger" style="height: 100%;">
+  <a-layout id="components-layout-demo-custom-trigger" style="height: 100%">
     <a-layout-sider v-model="collapsed" :trigger="null" collapsible>
       <!-- <div class="system-logo">
         <img src="~assets/img/logo.png" />
@@ -7,23 +7,25 @@
       <div class="logo"></div>
       <a-menu theme="dark" mode="inline" :default-selected-keys="['1']">
         <a-menu-item key="1">
-          <nuxt-link to="/userProfile">
-            <a-icon type="user" />
-            <span>Output Board</span>
+          <nuxt-link to="/inputList">
+            <a-icon type="unordered-list" />
+            <span>Input Board</span>
           </nuxt-link>
         </a-menu-item>
         <a-menu-item key="2">
-          <a-icon type="video-camera" />
-          <span>Input Board</span>
+          <nuxt-link to="/outputList">
+            <a-icon type="unordered-list" />
+            <span>Output Board</span>
+          </nuxt-link>
         </a-menu-item>
         <a-menu-item key="3">
-          <a-icon type="upload" />
+          <a-icon type="line-chart" />
           <span>Analytics</span>
         </a-menu-item>
-        <a-menu-item key="4">
+        <!-- <a-menu-item key="4">
           <a-icon type="upload" />
           <span>AI Advisor</span>
-        </a-menu-item>
+        </a-menu-item> -->
       </a-menu>
     </a-layout-sider>
     <a-layout>
@@ -40,7 +42,12 @@
       </transition>
       <headers @isCollapsed="collapsed = !collapsed"></headers>
       <a-layout-content
-        :style="{ margin: '24px 16px', padding: '24px', background: '#fff', display:'table' }"
+        :style="{
+          margin: '24px 16px',
+          padding: '24px',
+          background: '#fff',
+          display: 'table',
+        }"
       >
         <Nuxt />
       </a-layout-content>
