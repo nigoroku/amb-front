@@ -5,7 +5,7 @@
         <img src="~assets/img/logo.png" />
       </div>-->
       <div class="logo"></div>
-      <a-menu theme="dark" mode="inline" :default-selected-keys="['1']">
+      <a-menu theme="dark" mode="inline" :default-selected-keys="[currentPage]">
         <a-menu-item key="1">
           <nuxt-link to="/inputList">
             <a-icon type="unordered-list" />
@@ -59,6 +59,7 @@ import Headers from "@/components/Headers";
 import { mapState } from "vuex";
 
 export default {
+  middleware: "pageId",
   components: {
     Headers,
   },
@@ -68,7 +69,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["isShowAlert"]),
+    ...mapState(["isShowAlert", "currentPage"]),
   },
 };
 </script>

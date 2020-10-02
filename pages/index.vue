@@ -4,13 +4,21 @@
       <h1 key="title1" class="title">Ambitious Engineering</h1>
       <validation-observer ref="obs" v-slot="{ handleSubmit, invalid }">
         <form id="login-form" v-if="show" @submit.prevent="handleSubmit(login)">
-          <validation-provider rules="required|email" :name="$t('login.email')" v-slot="slotProps">
+          <validation-provider
+            rules="required|email"
+            :name="$t('login.email')"
+            v-slot="slotProps"
+          >
             <a-form-item
               hasFeedback
               :validateStatus="resolveState(slotProps)"
               :help="slotProps.errors[0]"
             >
-              <a-input type="email" placeholder="enter your email address..." v-model="email" />
+              <a-input
+                type="email"
+                placeholder="enter your email address..."
+                v-model="email"
+              />
             </a-form-item>
           </validation-provider>
           <validation-provider
@@ -23,11 +31,17 @@
               :validateStatus="resolveState(slotProps)"
               :help="slotProps.errors[0]"
             >
-              <a-input type="password" placeholder="enter password..." v-model="password" />
+              <a-input
+                type="password"
+                placeholder="enter password..."
+                v-model="password"
+              />
             </a-form-item>
           </validation-provider>
-          <button id="login-button" @click="login" :disabled="invalid">Log in</button>
-          <hr :style="{marginTop: '20px', marginBottom: '20px'}" />
+          <button id="login-button" @click="login" :disabled="invalid">
+            Log in
+          </button>
+          <hr :style="{ marginTop: '20px', marginBottom: '20px' }" />
           <button @click="gestLogin" id="gest-login-button">Gest Login</button>
         </form>
       </validation-observer>
@@ -84,7 +98,7 @@ export default {
           Cookie.set("auth", auth);
           Cookie.set("accountName", accountName);
 
-          self.$router.push("/outputList");
+          self.$router.push("/inputList");
         })
         .catch(function (e) {
           console.log(e);
@@ -104,7 +118,7 @@ export default {
           // TODO:ログイン認証
           self.$login(gestEmail, response.data.password, self);
 
-          self.$router.push("/outputList");
+          self.$router.push("/inputList");
         })
         .catch(function (e) {
           alert("アカウントの登録に失敗しました");

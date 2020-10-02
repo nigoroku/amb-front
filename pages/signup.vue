@@ -4,13 +4,21 @@
       <validation-observer ref="obs" v-slot="{ handleSubmit, invalid }">
         <h1 key="title1" class="title">Sign up</h1>
         <form id="login-form" v-if="show" @submit.prevent="handleSubmit(login)">
-          <validation-provider rules="required|email" :name="$t('login.email')" v-slot="slotProps">
+          <validation-provider
+            rules="required|email"
+            :name="$t('login.email')"
+            v-slot="slotProps"
+          >
             <a-form-item
               hasFeedback
               :validateStatus="resolveState(slotProps)"
               :help="slotProps.errors[0]"
             >
-              <a-input type="email" placeholder="enter your email address..." v-model="email" />
+              <a-input
+                type="email"
+                placeholder="enter your email address..."
+                v-model="email"
+              />
             </a-form-item>
           </validation-provider>
           <validation-provider
@@ -23,10 +31,20 @@
               :validateStatus="resolveState(slotProps)"
               :help="slotProps.errors[0]"
             >
-              <a-input type="password" placeholder="enter password..." v-model="password" />
+              <a-input
+                type="password"
+                placeholder="enter password..."
+                v-model="password"
+              />
             </a-form-item>
           </validation-provider>
-          <a-button type="danger" :disabled="invalid" id="signup-button" @click="createUser">Sign up</a-button>
+          <a-button
+            type="danger"
+            :disabled="invalid"
+            id="signup-button"
+            @click="createUser"
+            >Sign up</a-button
+          >
         </form>
       </validation-observer>
     </div>
@@ -98,7 +116,7 @@ export default {
               Cookie.set("auth", auth);
               Cookie.set("accountName", accountName);
 
-              self.$router.push("/outputList");
+              self.$router.push("/inputList");
             })
             .catch(function (e) {
               console.log(e);

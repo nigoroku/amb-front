@@ -16,7 +16,11 @@
         <a slot="title" :href="item.href">{{ item.account_name }}</a>
         <a-avatar slot="avatar" :src="item.avatar" />
       </a-list-item-meta>
-      <p>{{ item.summary }}</p>
+      <div v-if="item.summary">
+        <h4 style="font-weight: bold">{{ item.date }}のアウトプット</h4>
+
+        <p>{{ item.summary }}</p>
+      </div>
       <div v-if="item.output_page">
         <a v-bind:href="item.output_page.url" target="_blank">
           <a-card class="ref-link">
@@ -34,7 +38,12 @@
   </a-list>
 </template>
 <script>
+import moment from "moment";
+
 export default {
+  meta: {
+    page_id: "2",
+  },
   middleware: "authenticated",
   data() {
     return {
@@ -68,6 +77,7 @@ export default {
           list.introduction = user.introduction;
           if (output != null) {
             list.summary = output.summary;
+            list.date = moment(output.created_at).format("YYYY/MM/DD");
           }
           if (output_page.image_url) {
             list.output_page = output_page;

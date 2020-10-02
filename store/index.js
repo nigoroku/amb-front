@@ -1,6 +1,7 @@
 const cookieparser = process.server ? require("cookieparser") : undefined;
 
 export const state = () => ({
+  currentPage: "1",
   isShowTodoModal: false,
   isShowPerformanceModal: false,
   isShowAccountModal: false,
@@ -23,6 +24,9 @@ export const getters = {
 };
 
 export const mutations = {
+  setCurrentPage(state, payload) {
+    state.currentPage = payload;
+  },
   setAuth(state, auth) {
     state.auth = auth;
   },
