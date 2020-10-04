@@ -41,10 +41,7 @@
 import moment from "moment";
 
 export default {
-  meta: {
-    page_id: "2",
-  },
-  middleware: "authenticated",
+  layout: "timeline",
   data() {
     return {
       listData: [],

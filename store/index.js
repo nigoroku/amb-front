@@ -4,7 +4,6 @@ export const state = () => ({
   currentPage: "1",
   isShowTodoModal: false,
   isShowPerformanceModal: false,
-  isShowAccountModal: false,
   isShowAlert: false,
   auth: null,
   accountName: "",
@@ -55,9 +54,6 @@ export const mutations = {
   },
   toggleAlert(state, payload = null) {
     state.isShowAlert = !state.isShowAlert;
-  },
-  toggleAccountModal(state, payload = null) {
-    state.isShowAccountModal = !state.isShowAccountModal;
   },
   togglePerformanceModal(state, payload = null) {
     state.isShowPerformanceModal = !state.isShowPerformanceModal;

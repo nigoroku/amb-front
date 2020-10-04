@@ -59,7 +59,7 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: [],
+  modules: ["nuxt-fontawesome"],
   build: {
     loaders: {
       less: {
@@ -74,5 +74,28 @@ export default {
       }
     },
     transpile: ["vee-validate/dist/rules"]
+  },
+  fontawesome: {
+    imports: [
+      {
+        set: "@fortawesome/free-solid-svg-icons",
+        icons: ["fas"]
+      }
+    ]
+  },
+  router: {
+    extendRoutes(routes, resolve) {
+      routes.forEach(route => {
+        if (route.name === "inputList") {
+          route.meta = { page_id: "1" };
+        }
+        if (route.name === "outputList") {
+          route.meta = { page_id: "2" };
+        }
+        if (route.name === "analytics") {
+          route.meta = { page_id: "3" };
+        }
+      });
+    }
   }
 };

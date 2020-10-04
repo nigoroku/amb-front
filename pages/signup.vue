@@ -2,7 +2,9 @@
   <div class="wrapper">
     <div class="container">
       <validation-observer ref="obs" v-slot="{ handleSubmit, invalid }">
-        <h1 key="title1" class="title">Sign up</h1>
+        <h1 key="title1" class="title">
+          <font-awesome-icon icon="user" /> Sign up
+        </h1>
         <form id="login-form" v-if="show" @submit.prevent="handleSubmit(login)">
           <validation-provider
             rules="required|email"
@@ -116,7 +118,7 @@ export default {
               Cookie.set("auth", auth);
               Cookie.set("accountName", accountName);
 
-              self.$router.push("/inputList");
+              self.$router.push("/mypage");
             })
             .catch(function (e) {
               console.log(e);
@@ -163,10 +165,10 @@ $prim: #53e3a6;
 
 .wrapper {
   background: #50a3a2;
-  background: -webkit-linear-gradient(top left, #50a3a2 0%, #53e3a6 100%);
-  background: -moz-linear-gradient(top left, #50a3a2 0%, #53e3a6 100%);
-  background: -o-linear-gradient(top left, #50a3a2 0%, #53e3a6 100%);
-  background: linear-gradient(to bottom right, #50a3a2 0%, #53e3a6 100%);
+  background: -webkit-linear-gradient(top left, #dadada 0%, #100f0f 100%);
+  background: -moz-linear-gradient(top left, #dadada 0%, #100f0f 100%);
+  background: -o-linear-gradient(top left, #dadada 0%, #100f0f 100%);
+  background: linear-gradient(to bottom right, #dadada 0%, #100f0f 100%);
 
   width: 100%;
   height: 100%;

@@ -17,13 +17,18 @@
                   :checked="todo.checked"
                   :id="String(todo.todo_detail_id)"
                   @change="onChange"
-                >{{ todo.content }}</a-checkbox>
+                  >{{ todo.content }}</a-checkbox
+                >
               </a-row>
             </a-form-model-item>
           </a-form-model>
         </a-tab-pane>
         <a-tab-pane key="2" tab="今日のInput">
-          <a-form-model ref="inputForm" :model="inputForm" v-bind="formItemLayout2">
+          <a-form-model
+            ref="inputForm"
+            :model="inputForm"
+            v-bind="formItemLayout2"
+          >
             <a-form-model-item label="カテゴリ">
               <multiple-tag-select
                 :categories="categories"
@@ -56,7 +61,11 @@
           </a-form-model>
         </a-tab-pane>
         <a-tab-pane key="3" tab="今日のOutput" force-render>
-          <a-form-model ref="outputForm" :model="outputForm" v-bind="formItemLayout2">
+          <a-form-model
+            ref="outputForm"
+            :model="outputForm"
+            v-bind="formItemLayout2"
+          >
             <a-form-model-item label="カテゴリ" :categories="categories">
               <multiple-tag-select
                 :categories="categories"
@@ -92,7 +101,13 @@
     </section>
     <template slot="footer">
       <a-button key="back" @click="handleCancel">キャンセル</a-button>
-      <a-button key="submit" type="primary" :loading="confirmLoading" @click="handleOk">更新する</a-button>
+      <a-button
+        key="submit"
+        type="primary"
+        :loading="confirmLoading"
+        @click="handleOk"
+        >更新する</a-button
+      >
     </template>
   </a-modal>
 </template>

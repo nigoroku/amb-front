@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="container">
-      <h1 key="title1" class="title">Ambitious Engineering</h1>
+      <img src="@/assets/img/logo_text_white.png" style="width: 400px" />
       <validation-observer ref="obs" v-slot="{ handleSubmit, invalid }">
         <form id="login-form" v-if="show" @submit.prevent="handleSubmit(login)">
           <validation-provider
@@ -39,10 +39,12 @@
             </a-form-item>
           </validation-provider>
           <button id="login-button" @click="login" :disabled="invalid">
-            Log in
+            <font-awesome-icon icon="sign-in-alt" /> Log in
           </button>
           <hr :style="{ marginTop: '20px', marginBottom: '20px' }" />
-          <button @click="gestLogin" id="gest-login-button">Gest Login</button>
+          <button @click="gestLogin" id="gest-login-button">
+            <font-awesome-icon icon="sign-in-alt" /> Gest Login
+          </button>
         </form>
       </validation-observer>
     </div>
@@ -98,7 +100,7 @@ export default {
           Cookie.set("auth", auth);
           Cookie.set("accountName", accountName);
 
-          self.$router.push("/inputList");
+          self.$router.push("/mypage");
         })
         .catch(function (e) {
           console.log(e);
@@ -118,7 +120,7 @@ export default {
           // TODO:ログイン認証
           self.$login(gestEmail, response.data.password, self);
 
-          self.$router.push("/inputList");
+          self.$router.push("/mypage");
         })
         .catch(function (e) {
           alert("アカウントの登録に失敗しました");
@@ -149,24 +151,12 @@ export default {
 
 $prim: hsl(155, 72%, 61%);
 
-.title {
-  color: white;
-}
-
-.lp-image {
-  width: 50%;
-  height: 100%;
-  background-image: url("~assets/img/top_cover.jpg");
-  background-size: cover;
-  float: left;
-}
-
 .wrapper {
   background: #50a3a2;
-  background: -webkit-linear-gradient(top left, #50a3a2 0%, #53e3a6 100%);
-  background: -moz-linear-gradient(top left, #50a3a2 0%, #53e3a6 100%);
-  background: -o-linear-gradient(top left, #50a3a2 0%, #53e3a6 100%);
-  background: linear-gradient(to bottom right, #50a3a2 0%, #53e3a6 100%);
+  background: -webkit-linear-gradient(top left, #dadada 0%, #100f0f 100%);
+  background: -moz-linear-gradient(top left, #dadada 0%, #100f0f 100%);
+  background: -o-linear-gradient(top left, #dadada 0%, #100f0f 100%);
+  background: linear-gradient(to bottom right, #dadada 0%, #100f0f 100%);
 
   width: 100%;
   height: 100%;
@@ -184,7 +174,7 @@ $prim: hsl(155, 72%, 61%);
 .container {
   max-width: 400px;
   margin: 0 auto;
-  padding: 80px 0;
+  padding: 180px 0;
   height: 550px;
   text-align: center;
   display: flex;
@@ -247,9 +237,9 @@ $prim: hsl(155, 72%, 61%);
   #gest-login-button {
     appearance: none;
     outline: 0;
-    background-color: white;
-    border: 0;
-    color: $prim;
+    background-color: #00000075;
+    border: 1px solid #fff;
+    color: #ffffff;
     border-radius: 3px;
     width: 350px;
     cursor: pointer;
@@ -258,6 +248,7 @@ $prim: hsl(155, 72%, 61%);
     padding: 10px 15px;
 
     &:hover {
+      color: #000;
       background-color: rgb(245, 247, 249);
     }
 
