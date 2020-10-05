@@ -69,6 +69,9 @@ export const actions = {
   nuxtServerInit({ commit }, { req }) {
     let auth = null;
     let accountName = null;
+    if (typeof req === "undefined" || typeof req.headers === "undefined") {
+      return;
+    }
     if (req.headers.cookie) {
       const parsed = cookieparser.parse(req.headers.cookie);
       try {

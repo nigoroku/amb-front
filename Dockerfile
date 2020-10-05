@@ -1,0 +1,29 @@
+FROM node:12.13.1-alpine3.10 AS build
+
+ARG VUE_APP_USER_API_ENDPOIT
+ARG VUE_APP_TODO_API_ENDPOIT
+ARG VUE_APP_ACHIEVEMENT_API_ENDPOIT
+ARG VUE_APP_BOADLIST_API_ENDPOIT
+
+WORKDIR /app
+
+COPY ./package*.json ./
+
+RUN npm install
+
+COPY . .
+
+RUN set -x \
+    && env \
+    VUE_APP_USER_API_ENDPOIT=${VUE_APP_USER_API_ENDPOIT} \
+    VUE_APP_TODO_API_ENDPOIT=${VUE_APP_TODO_API_ENDPOIT} \
+    VUE_APP_ACHIEVEMENT_API_ENDPOIT=${VUE_APP_ACHIEVEMENT_API_ENDPOIT} \
+    VUE_APP_BOADLIST_API_ENDPOIT=${VUE_APP_BOADLIST_API_ENDPOIT} \
+    yarn generate
+
+# https://hub.docker.com/_/nginx
+FROM nginx:1.17.6-alpine
+
+COPY --from=build /app/dist /usr/share/nginx/html/
+
+EXPOSE 80

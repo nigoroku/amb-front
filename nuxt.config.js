@@ -10,11 +10,14 @@ export default {
    */
   target: "server",
   env: {
-    userApiEndpoit: "http://localhost:8081",
-    todoApiEndpoit: "http://localhost:8082",
-    achievementApiEndpoit: "http://localhost:8083",
-    boadListApiEndpoit: "http://localhost:8084"
-    // process.env.VUE_APP_REST_API_ENDPOINT || "http://localhost:8080/api/v1"
+    userApiEndpoit:
+      process.env.VUE_APP_USER_API_ENDPOIT || "http://localhost:8081",
+    todoApiEndpoit:
+      process.env.VUE_APP_TODO_API_ENDPOIT || "http://localhost:8082",
+    achievementApiEndpoit:
+      process.env.VUE_APP_ACHIEVEMENT_API_ENDPOIT || "http://localhost:8083",
+    boadListApiEndpoit:
+      process.env.VUE_APP_BOADLIST_API_ENDPOIT || "http://localhost:8084"
   },
   head: {
     title: process.env.npm_package_name || "",
