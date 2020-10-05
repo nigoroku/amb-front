@@ -69,7 +69,6 @@ body {
 }
 
 header {
-  background: rgba(255, 255, 255, 0.78) !important;
   padding: 0;
   z-index: 30;
 }

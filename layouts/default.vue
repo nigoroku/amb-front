@@ -13,11 +13,7 @@
         />
       </transition>
       <headers @isCollapsed="collapsed = !collapsed"></headers>
-      <div
-        :style="{
-          padding: '24px',
-        }"
-      >
+      <div class="content">
         <Nuxt />
       </div>
     </a-layout>
@@ -92,5 +88,10 @@ export default {
 .top-enter,
 .top-leave-to {
   transform: translateY(-100vh) translateY(0px);
+}
+
+.content {
+  padding: 24px;
+  background: #444c57;
 }
 </style>

@@ -149,8 +149,6 @@ export default {
 
 
 <style lang="scss" scoped>
-$prim: #53e3a6;
-
 .title {
   color: white;
 }
@@ -164,11 +162,10 @@ $prim: #53e3a6;
 }
 
 .wrapper {
-  background: #50a3a2;
-  background: -webkit-linear-gradient(top left, #dadada 0%, #100f0f 100%);
-  background: -moz-linear-gradient(top left, #dadada 0%, #100f0f 100%);
-  background: -o-linear-gradient(top left, #dadada 0%, #100f0f 100%);
-  background: linear-gradient(to bottom right, #dadada 0%, #100f0f 100%);
+  background: -webkit-linear-gradient(top left, #2b2b2b 0%, #100f0f 100%);
+  background: -moz-linear-gradient(top left, #2b2b2b 0%, #100f0f 100%);
+  background: -o-linear-gradient(top left, #2b2b2b 0%, #100f0f 100%);
+  background: linear-gradient(to bottom right, #2b2b2b 0%, #100f0f 100%);
 
   width: 100%;
   height: 100%;
@@ -186,7 +183,7 @@ $prim: #53e3a6;
 .container {
   max-width: 400px;
   margin: 0 auto;
-  padding: 80px 0;
+  padding: 120px 0;
   height: 550px;
   text-align: center;
   display: flex;
@@ -232,7 +229,7 @@ $prim: #53e3a6;
       background-color: white;
       width: 400px;
 
-      color: $prim;
+      color: #31312d;
     }
 
     &::placeholder {

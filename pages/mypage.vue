@@ -2,7 +2,7 @@
   <div id="charts-container" class="container">
     <a-row>
       <a-col :span="6">
-        <a-card class="chart-card">
+        <a-card class="chart-card-dark">
           <div style="padding-top: 10px; margin-right: 5px">
             <div class="photo-to-circle"></div>
           </div>
@@ -16,7 +16,7 @@
         </a-card>
       </a-col>
       <a-col :span="6">
-        <a-card class="chart-card">
+        <a-card class="chart-card-dark">
           <h2>総学習時間</h2>
           <span id="total-time">{{ total_study_time }}</span
           ><span> 時間</span>
@@ -134,12 +134,15 @@ export default {
 }
 .total-time-box {
   padding: 20px;
+  color: #fff;
   & h2 {
     margin-bottom: 0px;
+    color: #fff;
   }
 }
 #total-time {
   font-size: 60px;
+  color: #fff;
 }
 .chart-card {
   padding: 0px 15px 10px 15px;
@@ -148,17 +151,22 @@ export default {
 }
 .chart-card-dark {
   background: #444c57;
-  border: 1px solid #60656f;
+  border: none;
   padding: 0px 15px 10px 15px;
   margin: 10px;
   border-radius: 10px;
+
+  & h2 {
+    color: #fff;
+  }
 }
 .account_name {
   font-size: 24px;
   display: block;
+  color: #fff;
 }
 .introduction {
-  color: gray;
+  color: #fff;
   font-size: 13px;
 }
 </style>

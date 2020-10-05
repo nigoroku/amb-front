@@ -1,8 +1,8 @@
 <template>
   <a-layout-header
     style="
-      background: #fff;
-      padding-left: 15px;
+      background: rgb(29 24 24);
+      padding-left: 0px;
       padding-right: 5px;
       display: flex;
       justify-content: space-between;
@@ -10,14 +10,14 @@
   >
     <div
       style="
-        border-bottom: 1px solid #e8e8e8;
+        border-bottom: 1px solid rgb(29 24 24);
         display: flex;
         justify-content: space-between;
         width: 100%;
       "
     >
       <div class="top-menu-left">
-        <img src="@/assets/img/logo.png" style="width: 200px; padding: 5px" />
+        <img src="@/assets/img/logo.png" style="width: 140px; padding: 2px" />
         <a-menu mode="horizontal" v-show="auth">
           <a-menu-item key="4" @click="showTodoModal"
             ><font-awesome-icon icon="external-link-alt" /> 今日の目標を登録する

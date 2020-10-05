@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="container">
-      <img src="@/assets/img/logo_text_white.png" style="width: 400px" />
+      <img src="@/assets/img/logo.png" style="width: 400px" />
       <validation-observer ref="obs" v-slot="{ handleSubmit, invalid }">
         <form id="login-form" v-if="show" @submit.prevent="handleSubmit(login)">
           <validation-provider
@@ -149,14 +149,12 @@ export default {
 <style lang="scss" scoped>
 // @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:200, 300);
 
-$prim: hsl(155, 72%, 61%);
-
 .wrapper {
   background: #50a3a2;
-  background: -webkit-linear-gradient(top left, #dadada 0%, #100f0f 100%);
-  background: -moz-linear-gradient(top left, #dadada 0%, #100f0f 100%);
-  background: -o-linear-gradient(top left, #dadada 0%, #100f0f 100%);
-  background: linear-gradient(to bottom right, #dadada 0%, #100f0f 100%);
+  background: -webkit-linear-gradient(top left, #2b2b2b 0%, #100f0f 100%);
+  background: -moz-linear-gradient(top left, #2b2b2b 0%, #100f0f 100%);
+  background: -o-linear-gradient(top left, #2b2b2b 0%, #100f0f 100%);
+  background: linear-gradient(to bottom right, #2b2b2b 0%, #100f0f 100%);
 
   width: 100%;
   height: 100%;
@@ -225,7 +223,7 @@ $prim: hsl(155, 72%, 61%);
       background-color: white;
       width: 400px;
 
-      color: $prim;
+      color: #31312d;
     }
 
     &::placeholder {
