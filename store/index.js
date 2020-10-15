@@ -9,7 +9,12 @@ export const state = () => ({
   accountName: "",
   locales: ["en", "ja"],
   locale: "ja",
-  todos: []
+  todos: [
+    {
+      date: "",
+      details: []
+    }
+  ]
 });
 
 export const getters = {
@@ -35,17 +40,46 @@ export const mutations = {
   initTodo(state, todos) {
     state.todos = todos;
   },
-  addTodo(state, { todo_detail_id, content, checked }) {
-    state.todos.push({
-      todo_detail_id: todo_detail_id,
-      content: content,
-      checked: checked
+  addTodo(state, { date, details }) {
+    let dt = details.map(function(d) {
+      return {
+        todo_detail_id: d.todo_detail_id,
+        content: d.content,
+        checked: d.checked
+      };
     });
-  },
-  checkTodo(state, { todo_detail_id, checked }) {
+    // 日付でソートする
+    let sort = t => {
+      t.sort(function(a, b) {
+        if (a.date > b.date) {
+          return -1;
+        } else {
+          return 1;
+        }
+      });
+    };
+
     state.todos.forEach(t => {
-      if (t.todo_detail_id == todo_detail_id) {
-        t.checked = checked;
+      if (t.date == date) {
+        t.detsils.push(dt);
+        sort(state.todos);
+        return;
+      }
+    });
+    state.todos.push({
+      date: date,
+      details: dt
+    });
+    sort(state.todos);
+  },
+  checkTodo(state, { date, todo_detail_id, checked }) {
+    state.todos.forEach(t => {
+      if (t.date == date) {
+        t.details.forEach(td => {
+          if (td.todo_detail_id == todo_detail_id) {
+            td.checked = checked;
+          }
+        });
       }
     });
   },

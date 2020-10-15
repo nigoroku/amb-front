@@ -117,12 +117,12 @@ export default {
         })
         .then(function (response) {
           console.log(response.data);
-          // TODO:ログイン認証
-          self.$login(gestEmail, response.data.password, self);
-
-          self.$router.push("/mypage");
+          self.email = gestEmail;
+          self.password = response.data.password;
+          self.login();
         })
         .catch(function (e) {
+          console.log(e);
           alert("アカウントの登録に失敗しました");
         })
         .finally(function () {});

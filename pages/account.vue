@@ -1,6 +1,6 @@
 <template>
-  <div id="charts-container" class="container">
-    <section class="modal-card-body">
+  <div class="container">
+    <section class="account-model">
       <a-form-model :model="accountForm" v-bind="formItemLayout">
         <input
           type="file"
@@ -22,21 +22,21 @@
             </div>
           </div>
         </div>
-        <a-form-model-item label="アカウント名">
+        <a-form-model-item class="dark-item-label" label="アカウント名">
           <a-input
             placeholder="account name..."
             v-model="accountForm.account_name"
             type="text"
           ></a-input>
         </a-form-model-item>
-        <a-form-model-item label="email">
+        <a-form-model-item class="dark-item-label" label="email">
           <a-input
             placeholder="email..."
             v-model="accountForm.email"
             type="email"
           ></a-input>
         </a-form-model-item>
-        <a-form-model-item label="紹介文">
+        <a-form-model-item class="dark-item-label" label="紹介文">
           <a-input
             type="textarea"
             v-model="accountForm.introduction"
@@ -50,7 +50,8 @@
             :loading="confirmLoading"
             @click="handleOk"
             style="margin-right: 10px"
-            ><font-awesome-icon icon="check" /> 更新する</a-button
+            ><font-awesome-icon icon="check" style="margin-right: 5px" />
+            更新する</a-button
           >
           <a-button key="back" @click="handleCancel">キャンセル</a-button>
         </a-form-model-item>

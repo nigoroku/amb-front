@@ -9,16 +9,29 @@
     <section class="modal-card-body">
       <a-tabs default-active-key="1">
         <a-tab-pane key="1" tab="目標達成状況">
-          <p v-if="todos.length == 0">まだ今日の目標が登録されていません。</p>
-          <a-form-model v-if="todos.length > 0" v-bind="formItemLayout1">
-            <a-form-model-item label="目標">
-              <a-row v-for="todo in todos" :key="String(todo.todo_detail_id)">
-                <a-checkbox
-                  :checked="todo.checked"
-                  :id="String(todo.todo_detail_id)"
-                  @change="onChange"
-                  >{{ todo.content }}</a-checkbox
+          <p v-if="todos.length == 0">まだ目標が登録されていません。</p>
+          <a-form-model
+            v-if="todos.length > 0"
+            v-bind="{ wrapperCol: { offset: 1 } }"
+          >
+            <a-form-model-item>
+              <a-row v-for="todo in todos" :key="String(todo.date)">
+                <p style="margin-bottom: 0px">
+                  {{ isTodayTodo(todo.date) ? "本日" : todo.date }}の目標
+                </p>
+                <div
+                  v-for="td in todo.details"
+                  :key="String(td.todo_detail_id)"
                 >
+                  <a-checkbox
+                    :checked="td.checked"
+                    :value="todo.date"
+                    :id="String(td.todo_detail_id)"
+                    @change="onChange"
+                    >{{ td.content }}</a-checkbox
+                  >
+                </div>
+                <hr />
               </a-row>
             </a-form-model-item>
           </a-form-model>
@@ -166,11 +179,10 @@ export default {
         .get("/api/v1/todo/select?user_id=" + userId)
         .then(function (response) {
           self.$store.commit("initTodo", []);
-          response.data.todoDetails.forEach((ele) => {
+          response.data.todos.forEach((ele) => {
             self.$store.commit("addTodo", {
-              todo_detail_id: ele.todo_detail_id,
-              content: ele.content,
-              checked: ele.checked,
+              date: ele.date,
+              details: ele.todos,
             });
           });
         })
@@ -237,8 +249,9 @@ export default {
         });
     },
     updateTodo() {
+      const details = this.todos.flatMap((t) => t.details);
       this.$http(process.env.todoApiEndpoit)
-        .post("/api/v1/todo/edit", this.todos)
+        .post("/api/v1/todo/edit", details)
         .then(function (response) {
           console.log(response.data);
         })
@@ -265,6 +278,10 @@ export default {
           console.log(response.data);
         })
         .catch(function () {});
+    },
+    isTodayTodo(date) {
+      let now = moment(new Date());
+      return now.format("YYYY/MM/DD") == date;
     },
     handleOk(e) {
       this.confirmLoading = true;
@@ -294,6 +311,7 @@ export default {
     },
     onChange(e) {
       this.$store.commit("checkTodo", {
+        date: e.target.value,
         todo_detail_id: e.target.id,
         checked: e.target.checked,
       });

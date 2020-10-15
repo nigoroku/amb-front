@@ -6,7 +6,11 @@
     @cancel="handleCancel"
     width="60%"
   >
-    <a-form-model ref="todoForm" :model="todoForm" v-bind="formItemLayoutWithOutLabel">
+    <a-form-model
+      ref="todoForm"
+      :model="todoForm"
+      v-bind="formItemLayoutWithOutLabel"
+    >
       <a-form-model-item
         v-for="(todo, index) in todoForm.todos"
         :key="todo.key"
@@ -14,10 +18,10 @@
         :label="index === 0 ? '目標' : ''"
         :prop="'todos.' + index + '.content'"
         :rules="{
-        required: true,
-        message: '目標を設定してください',
-        trigger: 'blur',
-      }"
+          required: true,
+          message: '目標を設定してください',
+          trigger: 'blur',
+        }"
       >
         <a-input
           v-model="todo.content"
@@ -40,7 +44,13 @@
     </a-form-model>
     <template slot="footer">
       <a-button key="back" @click="handleCancel">キャンセル</a-button>
-      <a-button key="submit" type="primary" :loading="confirmLoading" @click="handleOk">登録する</a-button>
+      <a-button
+        key="submit"
+        type="primary"
+        :loading="confirmLoading"
+        @click="handleOk"
+        >登録する</a-button
+      >
     </template>
   </a-modal>
 </template>
@@ -107,9 +117,8 @@ export default {
         .then(function (response) {
           response.data.todos.forEach((ele) => {
             self.$store.commit("addTodo", {
-              todo_detail_id: ele.todo_detail_id,
-              content: ele.content,
-              checked: false,
+              date: ele.date,
+              details: ele.todos,
             });
           });
         })

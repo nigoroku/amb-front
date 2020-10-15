@@ -77,7 +77,6 @@ export default {
     this.$http(process.env.userApiEndpoit)
       .get("/api/v1/user/account?user_id=" + this.getUserId)
       .then(function (response) {
-        console.log(response);
         let account = response.data.account;
         self.account_name = account.account_name;
         let introduction = account.introduction;
@@ -157,6 +156,10 @@ export default {
   border-radius: 10px;
 
   & h2 {
+    color: #fff;
+  }
+
+  & span {
     color: #fff;
   }
 }
