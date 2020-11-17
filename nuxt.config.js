@@ -62,7 +62,7 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: ["nuxt-fontawesome"],
+  modules: ["nuxt-fontawesome", "@nuxtjs/dotenv"],
   build: {
     loaders: {
       less: {
