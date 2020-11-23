@@ -81,7 +81,9 @@ export default {
     // アカウント情報取得
     this.findAccount(self);
 
-    // 学習時間集計値取得
+    // TODO:学習時間集計値取得
+
+    // TODO:集計単位ごとの学習時間推移取得
   },
   methods: {
     // アカウント情報取得
@@ -136,7 +138,16 @@ export default {
     findLearningTimeAggregate(self) {
       self
         .$http(process.env.userApiEndpoit)
-        .get("/api/v1/achievement/account?user_id=" + self.getUserId)
+        .get("/api/v1/achievement/aggregate?user_id=" + self.getUserId)
+        .then(function (response) {})
+        .catch(function () {})
+        .finally(function () {});
+    },
+    // 集計単位ごとの学習時間推移取得
+    findLearningTimeTransitionForAggregationUnit(self) {
+      self
+        .$http(process.env.userApiEndpoit)
+        .get("/api/v1/achievement/aggregate?user_id=" + self.getUserId)
         .then(function (response) {})
         .catch(function () {})
         .finally(function () {});
