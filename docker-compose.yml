@@ -1,0 +1,14 @@
+version: "3"
+services:
+  amb-front:
+    build:
+      context: .
+    image: amb-front:latest
+    ports:
+      - "3000:80"
+    networks:
+      - amb-network
+
+networks:
+  amb-network:
+    external: true

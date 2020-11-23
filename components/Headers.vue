@@ -1,55 +1,91 @@
 <template>
   <a-layout-header
-    style="background: #fff; padding: 0;display:flex;justify-content: space-between;"
+    style="
+      background: rgb(29 24 24);
+      padding-left: 0px;
+      padding-right: 5px;
+      display: flex;
+      justify-content: space-between;
+    "
   >
-    <div>
-      <a-icon
-        class="trigger"
-        v-show="auth"
-        :type="collapsed ? 'menu-unfold' : 'menu-fold'"
-        @click="isCollapsed"
-      />
-      <a-button type="primary" v-show="auth" @click="showTodoModal">
-        <a-icon type="flag" />今日の目標
-      </a-button>
-      <a-button type="primary" v-show="auth" @click="showPerformanceModal">
-        <a-icon type="check-circle" />今日の実績
-      </a-button>
-    </div>
-    <div :style="{ textAlign: 'right' }">
-      <a-dropdown v-show="auth" style="margin-right:20px;">
-        <a class="ant-dropdown-link" style="display:flex;" @click="e => e.preventDefault()">
-          <!-- <img class="photo-to-circle" src="@/assets/img/no_photo.png" /> -->
-          <div style="padding-top: 10px;margin-right:5px;">
-            <div class="photo-to-circle"></div>
-          </div>
-          <span>{{ this.accountName }}</span>
-          <a-icon type="down" style="margin-left:5px;padding-top: 27px;" />
-        </a>
-        <a-menu slot="overlay">
-          <a-menu-item>
-            <a class="login-btn" @click="showAccountModal" :style="{color: 'black'}">アカウント</a>
+    <div
+      style="
+        border-bottom: 1px solid rgb(29 24 24);
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+      "
+    >
+      <div class="top-menu-left">
+        <img src="@/assets/img/logo.png" style="width: 140px; padding: 2px" />
+        <a-menu mode="horizontal" v-show="auth">
+          <a-menu-item key="4" @click="showTodoModal"
+            ><font-awesome-icon icon="external-link-alt" /> 今日の目標を登録する
           </a-menu-item>
-          <a-menu-item>
-            <a class="login-btn" @click="logout" :style="{color: 'black'}">ログアウト</a>
+          <a-menu-item key="5" @click="showPerformanceModal"
+            ><font-awesome-icon icon="external-link-alt" /> 今日の実績を登録する
           </a-menu-item>
         </a-menu>
-      </a-dropdown>
-
-      <nuxt-link class="login-btn" v-show="!auth" to="/" :style="{color: 'black'}">Log in</nuxt-link>
-      <a-button type="danger" v-show="!auth" :style="{ padding:'5px 8px',margin:'0px 15px' }">
-        <nuxt-link to="/signup">Sign up</nuxt-link>
-      </a-button>
+      </div>
+      <div class="top-menu-right">
+        <a-menu mode="horizontal">
+          <a-sub-menu>
+            <span slot="title" class="submenu-title-wrapper"
+              ><font-awesome-icon icon="users" /> 他の人の積み上げ</span
+            >
+            <a-menu-item key="1">
+              <nuxt-link to="/inputList">インプット実績</nuxt-link>
+            </a-menu-item>
+            <a-menu-item key="2">
+              <nuxt-link to="/outputList">アウトプット実績</nuxt-link>
+            </a-menu-item>
+          </a-sub-menu>
+        </a-menu>
+        <div v-show="auth">
+          <a-dropdown style="padding-left: 25px; margin-right: 20px">
+            <a
+              class="ant-dropdown-link"
+              style="display: flex"
+              @click="(e) => e.preventDefault()"
+            >
+              <span>{{ this.accountName }}</span>
+              <a-icon type="down" style="margin-left: 5px; padding-top: 27px" />
+            </a>
+            <a-menu slot="overlay">
+              <a-menu-item style="padding: 10px 20px">
+                <nuxt-link to="/mypage"
+                  ><font-awesome-icon icon="user" /> マイページ
+                </nuxt-link>
+              </a-menu-item>
+              <a-menu-item style="padding: 10px 20px">
+                <a class="login-btn" @click="logout"
+                  ><font-awesome-icon icon="sign-out-alt" /> ログアウト</a
+                >
+              </a-menu-item>
+            </a-menu>
+          </a-dropdown>
+        </div>
+        <a-menu mode="horizontal" v-show="!auth">
+          <a-menu-item>
+            <nuxt-link to="/"
+              ><font-awesome-icon icon="sign-in-alt" /> ログイン</nuxt-link
+            >
+          </a-menu-item>
+        </a-menu>
+        <a-menu mode="horizontal" v-show="!auth">
+          <a-button type="danger" style="margin-top: 15px; margin-right: 20px">
+            <nuxt-link to="/signup">Sign up</nuxt-link>
+          </a-button>
+        </a-menu>
+      </div>
+      <todo-modal></todo-modal>
+      <performance-modal></performance-modal>
     </div>
-    <todo-modal></todo-modal>
-    <performance-modal></performance-modal>
-    <account-modal v-if="isShowAccountModal"></account-modal>
   </a-layout-header>
 </template>
 <script>
 import TodoModal from "@/components/TodoModal";
 import PerformanceModal from "@/components/PerformanceModal";
-import AccountModal from "@/components/AccountModal";
 import { mapState, mapGetters } from "vuex";
 
 const Cookie = process.client ? require("js-cookie") : undefined;
@@ -58,7 +94,6 @@ export default {
   components: {
     TodoModal,
     PerformanceModal,
-    AccountModal,
   },
   data() {
     return {};
@@ -74,9 +109,6 @@ export default {
     showPerformanceModal() {
       this.$store.commit("togglePerformanceModal");
     },
-    showAccountModal() {
-      this.$store.commit("toggleAccountModal");
-    },
     logout() {
       Cookie.remove("auth");
       this.$store.commit("setAuth", null);
@@ -84,11 +116,15 @@ export default {
     },
   },
   computed: {
-    ...mapState(["auth", "accountName", "isShowAccountModal"]),
+    ...mapState(["auth", "accountName"]),
     ...mapGetters(["getUserId"]),
   },
   mounted: function () {
     this.$store.commit("setAccountName", Cookie.get("accountName"));
+
+    if (this.getUserId == null) {
+      return;
+    }
 
     let self = this;
     this.$http(process.env.userApiEndpoit)
@@ -108,16 +144,20 @@ export default {
           });
         };
 
-        var createPngFile4Base64 = function (base64, name) {
+        var createPngFile4Base64 = function (base64, name, content_type) {
           var bin = atob(base64.replace(/^.*,/, ""));
           var buffer = new Uint8Array(bin.length);
           for (var i = 0; i < bin.length; i++) {
             buffer[i] = bin.charCodeAt(i);
           }
-          return new File([buffer.buffer], name, { type: "image/png" });
+          return new File([buffer.buffer], name, { type: content_type });
         };
 
-        let file = createPngFile4Base64(account.account_img, "tmp");
+        let file = createPngFile4Base64(
+          account.account_img,
+          "tmp",
+          account.content_type
+        );
 
         // ファイル読み込みを実行
         reader.readAsDataURL(file);
@@ -128,15 +168,23 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-.login-btn {
-  display: inline-block;
-  padding: 0px 25px;
-
-  &:hover {
-    background: #cececebd;
-    transition: 0.6s;
-    cursor: pointer;
+.top-menu-left {
+  display: flex;
+  & .ant-menu-item,
+  & .ant-menu-submenu {
+    line-height: 60px;
   }
+}
+.top-menu-right {
+  display: flex;
+  & .ant-menu-item,
+  & .ant-menu-submenu {
+    line-height: 60px;
+  }
+}
+ul.ant-menu {
+  background: rgba(0, 0, 0, 0);
+  border-bottom: none;
 }
 .photo-to-circle {
   background-image: url("../assets/img/no_photo.png");

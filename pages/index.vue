@@ -1,16 +1,24 @@
 <template>
   <div class="wrapper">
     <div class="container">
-      <h1 key="title1" class="title">Ambitious Engineering</h1>
+      <h1 class="title">Ambitious Engneering</h1>
       <validation-observer ref="obs" v-slot="{ handleSubmit, invalid }">
         <form id="login-form" v-if="show" @submit.prevent="handleSubmit(login)">
-          <validation-provider rules="required|email" :name="$t('login.email')" v-slot="slotProps">
+          <validation-provider
+            rules="required|email"
+            :name="$t('login.email')"
+            v-slot="slotProps"
+          >
             <a-form-item
               hasFeedback
               :validateStatus="resolveState(slotProps)"
               :help="slotProps.errors[0]"
             >
-              <a-input type="email" placeholder="enter your email address..." v-model="email" />
+              <a-input
+                type="email"
+                placeholder="enter your email address..."
+                v-model="email"
+              />
             </a-form-item>
           </validation-provider>
           <validation-provider
@@ -23,12 +31,20 @@
               :validateStatus="resolveState(slotProps)"
               :help="slotProps.errors[0]"
             >
-              <a-input type="password" placeholder="enter password..." v-model="password" />
+              <a-input
+                type="password"
+                placeholder="enter password..."
+                v-model="password"
+              />
             </a-form-item>
           </validation-provider>
-          <button id="login-button" @click="login" :disabled="invalid">Log in</button>
-          <hr :style="{marginTop: '20px', marginBottom: '20px'}" />
-          <button @click="gestLogin" id="gest-login-button">Gest Login</button>
+          <button id="login-button" @click="login" :disabled="invalid">
+            <font-awesome-icon icon="sign-in-alt" /> Log in
+          </button>
+          <hr :style="{ marginTop: '20px', marginBottom: '20px' }" />
+          <button @click="gestLogin" id="gest-login-button">
+            <font-awesome-icon icon="sign-in-alt" /> Gest Login
+          </button>
         </form>
       </validation-observer>
     </div>
@@ -59,6 +75,18 @@ export default {
     show: true,
   }),
   methods: {
+    testReq(url) {
+      const self = this;
+      this.$http(url)
+        .get("/", {})
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (e) {
+          console.log(e);
+        })
+        .finally(function () {});
+    },
     login() {
       const self = this;
       this.$http(process.env.userApiEndpoit)
@@ -84,7 +112,7 @@ export default {
           Cookie.set("auth", auth);
           Cookie.set("accountName", accountName);
 
-          self.$router.push("/outputList");
+          self.$router.push("/mypage");
         })
         .catch(function (e) {
           console.log(e);
@@ -101,12 +129,12 @@ export default {
         })
         .then(function (response) {
           console.log(response.data);
-          // TODO:ログイン認証
-          self.$login(gestEmail, response.data.password, self);
-
-          self.$router.push("/outputList");
+          self.email = gestEmail;
+          self.password = response.data.password;
+          self.login();
         })
         .catch(function (e) {
+          console.log(e);
           alert("アカウントの登録に失敗しました");
         })
         .finally(function () {});
@@ -133,26 +161,15 @@ export default {
 <style lang="scss" scoped>
 // @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:200, 300);
 
-$prim: hsl(155, 72%, 61%);
-
 .title {
   color: white;
+  font-size: 50px!important;
 }
-
-.lp-image {
-  width: 50%;
-  height: 100%;
-  background-image: url("~assets/img/top_cover.jpg");
-  background-size: cover;
-  float: left;
-}
-
 .wrapper {
-  background: #50a3a2;
-  background: -webkit-linear-gradient(top left, #50a3a2 0%, #53e3a6 100%);
-  background: -moz-linear-gradient(top left, #50a3a2 0%, #53e3a6 100%);
-  background: -o-linear-gradient(top left, #50a3a2 0%, #53e3a6 100%);
-  background: linear-gradient(to bottom right, #50a3a2 0%, #53e3a6 100%);
+  background: -webkit-linear-gradient(top left, #2b2b2b 0%, #100f0f 100%);
+  background: -moz-linear-gradient(top left, #2b2b2b 0%, #100f0f 100%);
+  background: -o-linear-gradient(top left, #2b2b2b 0%, #100f0f 100%);
+  background: linear-gradient(to bottom right, #a7873f 0%, #681e7d 100%);
 
   width: 100%;
   height: 100%;
@@ -170,7 +187,7 @@ $prim: hsl(155, 72%, 61%);
 .container {
   max-width: 400px;
   margin: 0 auto;
-  padding: 80px 0;
+  padding: 130px 0;
   height: 550px;
   text-align: center;
   display: flex;
@@ -221,7 +238,7 @@ $prim: hsl(155, 72%, 61%);
       background-color: white;
       width: 400px;
 
-      color: $prim;
+      color: #31312d;
     }
 
     &::placeholder {
@@ -233,9 +250,9 @@ $prim: hsl(155, 72%, 61%);
   #gest-login-button {
     appearance: none;
     outline: 0;
-    background-color: white;
-    border: 0;
-    color: $prim;
+    background-color: #00000075;
+    border: 1px solid #fff;
+    color: #ffffff;
     border-radius: 3px;
     width: 350px;
     cursor: pointer;
@@ -244,6 +261,7 @@ $prim: hsl(155, 72%, 61%);
     padding: 10px 15px;
 
     &:hover {
+      color: #000;
       background-color: rgb(245, 247, 249);
     }
 

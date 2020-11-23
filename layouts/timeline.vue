@@ -14,7 +14,9 @@
       </transition>
       <headers @isCollapsed="collapsed = !collapsed"></headers>
       <div class="content">
-        <Nuxt />
+        <div class="content-box">
+          <Nuxt />
+        </div>
       </div>
     </a-layout>
   </a-layout>
@@ -39,15 +41,13 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-body {
+.content {
   background: #e8e8e8;
+  padding: 24px;
 }
-
-#__nuxt {
-  height: 100%;
-}
-#__layout {
-  height: 100%;
+.content-box {
+  background: #fff;
+  padding: 24px;
 }
 #components-layout-demo-custom-trigger .trigger {
   font-size: 18px;
@@ -92,9 +92,5 @@ body {
 .top-enter,
 .top-leave-to {
   transform: translateY(-100vh) translateY(0px);
-}
-
-.content {
-  background: #e8e8e8;
 }
 </style>

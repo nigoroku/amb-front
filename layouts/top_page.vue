@@ -69,7 +69,6 @@ body {
 }
 
 header {
-  background: #ffffff63 !important;
   padding: 0;
   z-index: 30;
 }

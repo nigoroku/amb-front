@@ -1,3 +1,6 @@
+const envPath = `.env.${process.env.NODE_ENV || "production"}`;
+require("dotenv").config({ path: envPath });
+
 export default {
   /*
    ** Nuxt rendering mode
@@ -10,11 +13,14 @@ export default {
    */
   target: "server",
   env: {
-    userApiEndpoit: "http://localhost:8081",
-    todoApiEndpoit: "http://localhost:8082",
-    achievementApiEndpoit: "http://localhost:8083",
-    boadListApiEndpoit: "http://localhost:8084"
-    // process.env.VUE_APP_REST_API_ENDPOINT || "http://localhost:8080/api/v1"
+    userApiEndpoit:
+      process.env.VUE_APP_USER_API_ENDPOIT || "http://localhost:8081",
+    todoApiEndpoit:
+      process.env.VUE_APP_TODO_API_ENDPOIT || "http://localhost:8082",
+    achievementApiEndpoit:
+      process.env.VUE_APP_ACHIEVEMENT_API_ENDPOIT || "http://localhost:8083",
+    boadListApiEndpoit:
+      process.env.VUE_APP_BOADLIST_API_ENDPOIT || "http://localhost:8084"
   },
   head: {
     title: process.env.npm_package_name || "",
@@ -59,7 +65,10 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: [],
+  modules: ["nuxt-fontawesome", "@nuxtjs/dotenv"],
+  dotenv: {
+    filename: envPath
+  },
   build: {
     loaders: {
       less: {
@@ -74,5 +83,28 @@ export default {
       }
     },
     transpile: ["vee-validate/dist/rules"]
+  },
+  fontawesome: {
+    imports: [
+      {
+        set: "@fortawesome/free-solid-svg-icons",
+        icons: ["fas"]
+      }
+    ]
+  },
+  router: {
+    extendRoutes(routes, resolve) {
+      routes.forEach(route => {
+        if (route.name === "inputList") {
+          route.meta = { page_id: "1" };
+        }
+        if (route.name === "outputList") {
+          route.meta = { page_id: "2" };
+        }
+        if (route.name === "analytics") {
+          route.meta = { page_id: "3" };
+        }
+      });
+    }
   }
 };

@@ -1,11 +1,6 @@
 <template>
-  <a-modal
-    title="マイアカウント"
-    :visible="isShowAccountModal"
-    :confirm-loading="confirmLoading"
-    @cancel="handleCancel"
-  >
-    <section class="modal-card-body">
+  <div class="container">
+    <section class="account-model">
       <a-form-model :model="accountForm" v-bind="formItemLayout">
         <input
           type="file"
@@ -22,49 +17,61 @@
                 class="camera-icon"
                 @click="openFile"
                 type="camera"
-                :style="{fontSize : '30px', color : '#fff'}"
+                :style="{ fontSize: '30px', color: '#fff' }"
               />
             </div>
           </div>
         </div>
-        <a-form-model-item label="アカウント名">
-          <a-input placeholder="account name..." v-model="accountForm.account_name" type="text"></a-input>
+        <a-form-model-item class="dark-item-label" label="アカウント名">
+          <a-input
+            placeholder="account name..."
+            v-model="accountForm.account_name"
+            type="text"
+          ></a-input>
         </a-form-model-item>
-        <a-form-model-item label="email">
-          <a-input placeholder="email..." v-model="accountForm.email" type="email"></a-input>
+        <a-form-model-item class="dark-item-label" label="email">
+          <a-input
+            placeholder="email..."
+            v-model="accountForm.email"
+            type="email"
+          ></a-input>
         </a-form-model-item>
-        <a-form-model-item label="紹介文">
+        <a-form-model-item class="dark-item-label" label="紹介文">
           <a-input
             type="textarea"
             v-model="accountForm.introduction"
             :auto-size="{ minRows: 6, maxRows: 8 }"
           />
         </a-form-model-item>
+        <a-form-model-item :wrapper-col="{ span: 14, offset: 7 }">
+          <a-button
+            key="submit"
+            type="primary"
+            :loading="confirmLoading"
+            @click="handleOk"
+            style="margin-right: 10px"
+            ><font-awesome-icon icon="check" style="margin-right: 5px" />
+            更新する</a-button
+          >
+          <a-button key="back" @click="handleCancel">キャンセル</a-button>
+        </a-form-model-item>
       </a-form-model>
     </section>
-    <template slot="footer">
-      <a-button key="back" @click="handleCancel">キャンセル</a-button>
-      <a-button key="submit" type="primary" :loading="confirmLoading" @click="handleOk">更新する</a-button>
-    </template>
-  </a-modal>
+  </div>
 </template>
+
 <script>
-import MultipleTagSelect from "@/components/MultipleTagSelect";
-import InputField from "@/components/InputField";
 import { mapState, mapGetters } from "vuex";
 
+const Cookie = process.client ? require("js-cookie") : undefined;
+
 export default {
-  name: "AccountModal",
-  components: {
-    MultipleTagSelect,
-    InputField,
-  },
   data() {
     return {
       confirmLoading: false,
       formItemLayout: {
-        labelCol: { span: 6 },
-        wrapperCol: { span: 16 },
+        labelCol: { span: 7 },
+        wrapperCol: { span: 10 },
       },
       accountForm: {
         account_name: "",
@@ -96,7 +103,8 @@ export default {
           },
         })
         .then(function (response) {
-          self.$store.commit("setAccountName", self.accountForm.account_name);
+          Cookie.set("accountName", account.account_name);
+          self.$router.push("/mypage");
         })
         .catch(function () {})
         .finally(function () {
@@ -105,7 +113,7 @@ export default {
         });
     },
     handleCancel() {
-      this.$store.commit("toggleAccountModal");
+      this.$router.push("/mypage");
     },
     openFile() {
       var clickImg = document.getElementById("accountImg");
@@ -129,7 +137,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(["isShowAccountModal", "auth"]),
+    ...mapState(["auth"]),
     ...mapGetters(["getUserId"]),
   },
   mounted: function () {
@@ -159,16 +167,20 @@ export default {
           });
         };
 
-        var createPngFile4Base64 = function (base64, name) {
+        var createPngFile4Base64 = function (base64, name, content_type) {
           var bin = atob(base64.replace(/^.*,/, ""));
           var buffer = new Uint8Array(bin.length);
           for (var i = 0; i < bin.length; i++) {
             buffer[i] = bin.charCodeAt(i);
           }
-          return new File([buffer.buffer], name, { type: "image/png" });
+          return new File([buffer.buffer], name, { type: content_type });
         };
 
-        let file = createPngFile4Base64(account.account_img, "tmp");
+        let file = createPngFile4Base64(
+          account.account_img,
+          "tmp",
+          account.content_type
+        );
 
         // ファイル読み込みを実行
         reader.readAsDataURL(file);
@@ -179,6 +191,11 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.container {
+  background: #fff;
+  padding: 60px;
+  height: 1000px;
+}
 .photo {
   display: flex;
   justify-content: center;

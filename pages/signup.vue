@@ -2,15 +2,25 @@
   <div class="wrapper">
     <div class="container">
       <validation-observer ref="obs" v-slot="{ handleSubmit, invalid }">
-        <h1 key="title1" class="title">Sign up</h1>
+        <h1 key="title1" class="title">
+          <font-awesome-icon icon="user" /> Sign up
+        </h1>
         <form id="login-form" v-if="show" @submit.prevent="handleSubmit(login)">
-          <validation-provider rules="required|email" :name="$t('login.email')" v-slot="slotProps">
+          <validation-provider
+            rules="required|email"
+            :name="$t('login.email')"
+            v-slot="slotProps"
+          >
             <a-form-item
               hasFeedback
               :validateStatus="resolveState(slotProps)"
               :help="slotProps.errors[0]"
             >
-              <a-input type="email" placeholder="enter your email address..." v-model="email" />
+              <a-input
+                type="email"
+                placeholder="enter your email address..."
+                v-model="email"
+              />
             </a-form-item>
           </validation-provider>
           <validation-provider
@@ -23,10 +33,20 @@
               :validateStatus="resolveState(slotProps)"
               :help="slotProps.errors[0]"
             >
-              <a-input type="password" placeholder="enter password..." v-model="password" />
+              <a-input
+                type="password"
+                placeholder="enter password..."
+                v-model="password"
+              />
             </a-form-item>
           </validation-provider>
-          <a-button type="danger" :disabled="invalid" id="signup-button" @click="createUser">Sign up</a-button>
+          <a-button
+            type="danger"
+            :disabled="invalid"
+            id="signup-button"
+            @click="createUser"
+            >Sign up</a-button
+          >
         </form>
       </validation-observer>
     </div>
@@ -98,7 +118,7 @@ export default {
               Cookie.set("auth", auth);
               Cookie.set("accountName", accountName);
 
-              self.$router.push("/outputList");
+              self.$router.push("/mypage");
             })
             .catch(function (e) {
               console.log(e);
@@ -129,10 +149,9 @@ export default {
 
 
 <style lang="scss" scoped>
-$prim: #53e3a6;
-
 .title {
   color: white;
+  font-size: 50px !important;
 }
 
 .lp-image {
@@ -144,11 +163,10 @@ $prim: #53e3a6;
 }
 
 .wrapper {
-  background: #50a3a2;
-  background: -webkit-linear-gradient(top left, #50a3a2 0%, #53e3a6 100%);
-  background: -moz-linear-gradient(top left, #50a3a2 0%, #53e3a6 100%);
-  background: -o-linear-gradient(top left, #50a3a2 0%, #53e3a6 100%);
-  background: linear-gradient(to bottom right, #50a3a2 0%, #53e3a6 100%);
+  background: -webkit-linear-gradient(top left, #2b2b2b 0%, #100f0f 100%);
+  background: -moz-linear-gradient(top left, #2b2b2b 0%, #100f0f 100%);
+  background: -o-linear-gradient(top left, #2b2b2b 0%, #100f0f 100%);
+  background: linear-gradient(to bottom right, #a7873f 0%, #681e7d 100%);
 
   width: 100%;
   height: 100%;
@@ -166,7 +184,7 @@ $prim: #53e3a6;
 .container {
   max-width: 400px;
   margin: 0 auto;
-  padding: 80px 0;
+  padding: 120px 0;
   height: 550px;
   text-align: center;
   display: flex;
@@ -212,7 +230,7 @@ $prim: #53e3a6;
       background-color: white;
       width: 400px;
 
-      color: $prim;
+      color: #31312d;
     }
 
     &::placeholder {

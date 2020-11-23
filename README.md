@@ -18,3 +18,13 @@ $ yarn generate
 ```
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+
+## ECR image push
+
+```bash
+# イメージにタグを設定
+$ docker tag <image>:<tag> <aws_account_id>.dkr.ecr.<cn-north-1>.amazonaws.com/<image>:<tag>
+
+# ECRにイメージをプッシュ
+$ docker push <aws_account_id>.dkr.ecr.<cn-north-1>.amazonaws.com/<image>:<tag>
+```

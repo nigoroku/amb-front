@@ -1,25 +1,36 @@
 const cookieparser = process.server ? require("cookieparser") : undefined;
 
 export const state = () => ({
+  currentPage: "1",
   isShowTodoModal: false,
   isShowPerformanceModal: false,
-  isShowAccountModal: false,
   isShowAlert: false,
   auth: null,
   accountName: "",
   locales: ["en", "ja"],
   locale: "ja",
-  todos: []
+  todos: [
+    {
+      date: "",
+      details: []
+    }
+  ]
 });
 
 export const getters = {
   getUserId: state => {
+    if (state.auth == null) {
+      return null;
+    }
     let payLoad = state.auth.accessToken.split(".")[1];
     return JSON.parse(atob(payLoad)).id;
   }
 };
 
 export const mutations = {
+  setCurrentPage(state, payload) {
+    state.currentPage = payload;
+  },
   setAuth(state, auth) {
     state.auth = auth;
   },
@@ -29,17 +40,46 @@ export const mutations = {
   initTodo(state, todos) {
     state.todos = todos;
   },
-  addTodo(state, { todo_detail_id, content, checked }) {
-    state.todos.push({
-      todo_detail_id: todo_detail_id,
-      content: content,
-      checked: checked
+  addTodo(state, { date, details }) {
+    let dt = details.map(function(d) {
+      return {
+        todo_detail_id: d.todo_detail_id,
+        content: d.content,
+        checked: d.checked
+      };
     });
-  },
-  checkTodo(state, { todo_detail_id, checked }) {
+    // 日付でソートする
+    let sort = t => {
+      t.sort(function(a, b) {
+        if (a.date > b.date) {
+          return -1;
+        } else {
+          return 1;
+        }
+      });
+    };
+
     state.todos.forEach(t => {
-      if (t.todo_detail_id == todo_detail_id) {
-        t.checked = checked;
+      if (t.date == date) {
+        t.detsils.push(dt);
+        sort(state.todos);
+        return;
+      }
+    });
+    state.todos.push({
+      date: date,
+      details: dt
+    });
+    sort(state.todos);
+  },
+  checkTodo(state, { date, todo_detail_id, checked }) {
+    state.todos.forEach(t => {
+      if (t.date == date) {
+        t.details.forEach(td => {
+          if (td.todo_detail_id == todo_detail_id) {
+            td.checked = checked;
+          }
+        });
       }
     });
   },
@@ -48,9 +88,6 @@ export const mutations = {
   },
   toggleAlert(state, payload = null) {
     state.isShowAlert = !state.isShowAlert;
-  },
-  toggleAccountModal(state, payload = null) {
-    state.isShowAccountModal = !state.isShowAccountModal;
   },
   togglePerformanceModal(state, payload = null) {
     state.isShowPerformanceModal = !state.isShowPerformanceModal;
@@ -66,6 +103,9 @@ export const actions = {
   nuxtServerInit({ commit }, { req }) {
     let auth = null;
     let accountName = null;
+    if (typeof req === "undefined" || typeof req.headers === "undefined") {
+      return;
+    }
     if (req.headers.cookie) {
       const parsed = cookieparser.parse(req.headers.cookie);
       try {
