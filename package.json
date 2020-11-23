@@ -9,7 +9,8 @@
     "export": "nuxt export",
     "serve": "nuxt serve",
     "generate": "nuxt generate",
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint './pages/**' --ext .vue './components/**' --ext .vue"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.31",
@@ -25,6 +26,7 @@
     "chart.js": "^2.9.3",
     "chartkick": "^3.2.1",
     "cookieparser": "^0.1.0",
+    "eslint": "^7.14.0",
     "fs": "^0.0.1-security",
     "hchs-vue-charts": "^1.2.8",
     "js-cookie": "^2.2.1",
@@ -48,6 +50,7 @@
   "devDependencies": {
     "@vue/test-utils": "^1.0.3",
     "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "^10.1.0",
     "babel-jest": "^26.0.1",
     "jest": "^26.0.1",
     "vue-jest": "^3.0.4"
