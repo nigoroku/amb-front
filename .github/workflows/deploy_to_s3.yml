@@ -17,14 +17,14 @@ jobs:
       - name: setup node
         uses: actions/setup-node@v1
         with:
-          node-version: '14.x'
+          node-version: '14.4.0'
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-northeast-1
+          aws-region: us-east-1
 
       - name: Cache dependencies
         uses: actions/cache@v1
@@ -34,7 +34,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - name: Install packages
-        run: npm ci
+        run: yarn install
 
       - name: Genarate files
         run: yarn generate
