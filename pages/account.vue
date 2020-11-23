@@ -191,6 +191,11 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.container {
+  background: #fff;
+  padding: 60px;
+  height: 1000px;
+}
 .photo {
   display: flex;
   justify-content: center;

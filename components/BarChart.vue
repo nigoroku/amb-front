@@ -24,11 +24,11 @@ export default {
         datasets: [
           {
             label: "Data One",
-            backgroundColor: "#2cbe4e73",
-            pointBackgroundColor: "white",
-            borderColor: "#2cbe4e",
+            backgroundColor: "rgba(215,215,215,0.5)",
+            pointBackgroundColor: "#c1c1c1",
+            borderColor: "#c1c1c1",
             borderWidth: 1,
-            pointBorderColor: "#249EBF",
+            pointBorderColor: "#c1c1c1",
             data: [40, 20, 30, 50, 90, 10, 20, 40, 50, 70, 90, 100],
           },
         ],
@@ -38,14 +38,14 @@ export default {
           display: true,
           text: "学習カテゴリ分布",
           fontSize: 16,
-          fontColor: "#fff",
+          fontColor: "#000",
         },
         scales: {
           yAxes: [
             {
               ticks: {
                 beginAtZero: true,
-                fontColor: "#fff",
+                fontColor: "#000",
               },
               gridLines: {
                 display: true,
@@ -56,7 +56,7 @@ export default {
             {
               ticks: {
                 beginAtZero: true,
-                fontColor: "#fff",
+                fontColor: "#000",
               },
               gridLines: {
                 display: false,

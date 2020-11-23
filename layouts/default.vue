@@ -38,7 +38,11 @@ export default {
   },
 };
 </script>
-<style lang="less">
+<style lang="scss" scoped>
+body {
+  background: #e8e8e8;
+}
+
 #__nuxt {
   height: 100%;
 }
@@ -91,7 +95,6 @@ export default {
 }
 
 .content {
-  padding: 24px;
-  background: #444c57;
+  background: #e8e8e8;
 }
 </style>

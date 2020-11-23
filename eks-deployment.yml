@@ -19,12 +19,3 @@ spec:
           image: 536969602909.dkr.ecr.us-east-1.amazonaws.com/amb-front:latest
           ports:
             - containerPort: 3000
-          env:
-            - name: VUE_APP_USER_API_ENDPOIT
-              value: "http://ambitious.nigoroku.net:8081"
-            - name: VUE_APP_TODO_API_ENDPOIT
-              value: "http://ambitious.nigoroku.net:8082"
-            - name: VUE_APP_ACHIEVEMENT_API_ENDPOIT
-              value: "http://ambitious.nigoroku.net:8083"
-            - name: VUE_APP_BOADLIST_API_ENDPOIT
-              value: "http://ambitious.nigoroku.net:8084"

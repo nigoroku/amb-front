@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="container">
-      <img src="@/assets/img/logo.png" style="width: 400px" />
+      <h1 class="title">Ambitious Engneering</h1>
       <validation-observer ref="obs" v-slot="{ handleSubmit, invalid }">
         <form id="login-form" v-if="show" @submit.prevent="handleSubmit(login)">
           <validation-provider
@@ -75,6 +75,18 @@ export default {
     show: true,
   }),
   methods: {
+    testReq(url) {
+      const self = this;
+      this.$http(url)
+        .get("/", {})
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (e) {
+          console.log(e);
+        })
+        .finally(function () {});
+    },
     login() {
       const self = this;
       this.$http(process.env.userApiEndpoit)
@@ -149,12 +161,15 @@ export default {
 <style lang="scss" scoped>
 // @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:200, 300);
 
+.title {
+  color: white;
+  font-size: 50px!important;
+}
 .wrapper {
-  background: #50a3a2;
   background: -webkit-linear-gradient(top left, #2b2b2b 0%, #100f0f 100%);
   background: -moz-linear-gradient(top left, #2b2b2b 0%, #100f0f 100%);
   background: -o-linear-gradient(top left, #2b2b2b 0%, #100f0f 100%);
-  background: linear-gradient(to bottom right, #2b2b2b 0%, #100f0f 100%);
+  background: linear-gradient(to bottom right, #a7873f 0%, #681e7d 100%);
 
   width: 100%;
   height: 100%;
@@ -172,7 +187,7 @@ export default {
 .container {
   max-width: 400px;
   margin: 0 auto;
-  padding: 180px 0;
+  padding: 130px 0;
   height: 550px;
   text-align: center;
   display: flex;

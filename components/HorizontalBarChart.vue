@@ -11,15 +11,15 @@ export default {
           {
             label: "input",
             data: [64],
-            backgroundColor: "#2cbe4e73",
-            borderColor: "#2cbe4e",
+            backgroundColor: "#a7873f78",
+            borderColor: "#a7873f",
             borderWidth: 1,
           },
           {
             label: "output",
             data: [36],
-            backgroundColor: "rgba(100, 181, 246, 0.4)",
-            borderColor: "#64b5f6",
+            backgroundColor: "#681e7d85",
+            borderColor: "#681e7d",
             borderWidth: 1,
           },
         ],
@@ -32,7 +32,7 @@ export default {
           display: true,
           text: "Input / Output (%)",
           fontSize: 20,
-          fontColor: "#fff",
+          fontColor: "#000",
         },
         scales: {
           yAxes: [
@@ -42,7 +42,7 @@ export default {
               xbarThickness: 10,
               ticks: {
                 beginAtZero: true,
-                fontColor: "#fff",
+                fontColor: "#000",
               },
             },
           ],
@@ -54,7 +54,7 @@ export default {
               },
               ticks: {
                 beginAtZero: true,
-                fontColor: "#fff",
+                fontColor: "#000",
               },
             },
           ],
@@ -63,7 +63,7 @@ export default {
           labels: {
             boxWidth: 50,
             padding: 20,
-            fontColor: "#fff",
+            fontColor: "#000",
           },
           fontSize: 30,
           display: true,

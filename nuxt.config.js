@@ -1,3 +1,6 @@
+const envPath = `.env.${process.env.NODE_ENV || "production"}`;
+require("dotenv").config({ path: envPath });
+
 export default {
   /*
    ** Nuxt rendering mode
@@ -63,6 +66,9 @@ export default {
    ** Nuxt.js modules
    */
   modules: ["nuxt-fontawesome", "@nuxtjs/dotenv"],
+  dotenv: {
+    filename: envPath
+  },
   build: {
     loaders: {
       less: {

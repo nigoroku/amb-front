@@ -8,6 +8,7 @@ build:
       template: "{{.IMAGE_NAME}}:{{.DIGEST_HEX}}"
   artifacts:
     - image: 536969602909.dkr.ecr.us-east-1.amazonaws.com/amb-front
+  local:
 deploy:
   kubectl:
     manifests:

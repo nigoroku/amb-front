@@ -8,7 +8,8 @@ RUN npm install
 
 COPY . .
 
-RUN yarn generate
+RUN set NODE_ENV=production \
+    && yarn generate
 
 # https://hub.docker.com/_/nginx
 FROM nginx:1.17.6-alpine

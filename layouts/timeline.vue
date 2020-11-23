@@ -13,12 +13,10 @@
         />
       </transition>
       <headers @isCollapsed="collapsed = !collapsed"></headers>
-      <div
-        :style="{
-          padding: '24px',
-        }"
-      >
-        <Nuxt />
+      <div class="content">
+        <div class="content-box">
+          <Nuxt />
+        </div>
       </div>
     </a-layout>
   </a-layout>
@@ -42,12 +40,14 @@ export default {
   },
 };
 </script>
-<style lang="less">
-#__nuxt {
-  height: 100%;
+<style lang="scss" scoped>
+.content {
+  background: #e8e8e8;
+  padding: 24px;
 }
-#__layout {
-  height: 100%;
+.content-box {
+  background: #fff;
+  padding: 24px;
 }
 #components-layout-demo-custom-trigger .trigger {
   font-size: 18px;

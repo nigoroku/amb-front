@@ -6,11 +6,6 @@ services:
     image: amb-front:latest
     ports:
       - "3000:80"
-    environment:
-      VUE_APP_USER_API_ENDPOIT: http://localhost:8081
-      VUE_APP_TODO_API_ENDPOIT: http://localhost:8082
-      VUE_APP_ACHIEVEMENT_API_ENDPOIT: http://localhost:8083
-      VUE_APP_BOADLIST_API_ENDPOIT: http://localhost:8084
     networks:
       - amb-network
 

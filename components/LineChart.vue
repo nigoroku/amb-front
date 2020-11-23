@@ -23,11 +23,12 @@ export default {
         datasets: [
           {
             label: "Data One",
-            fill: false,
-            pointBackgroundColor: "white",
-            borderWidth: 3,
-            borderColor: "#2cbe4e73",
-            pointBorderColor: "#2cbe4e",
+            fill: true,
+            pointBackgroundColor: "#d2d2d2bf",
+            borderWidth: 1,
+            borderColor: "#c1c1c1",
+            pointBorderColor: "#c1c1c1",
+            backgroundColor: "rgba(215,215,215,0.5)",
             lineTension: 0,
             data: [40, 20, 30, 50, 90, 10, 20, 40, 50, 70, 90, 100],
           },
@@ -38,14 +39,14 @@ export default {
           display: true,
           text: "学習時間推移",
           fontSize: 16,
-          fontColor: "#fff",
+          fontColor: "#000",
         },
         scales: {
           yAxes: [
             {
               ticks: {
                 beginAtZero: true,
-                fontColor: "#fff",
+                fontColor: "#000",
               },
               gridLines: {
                 display: true,
@@ -56,7 +57,7 @@ export default {
             {
               ticks: {
                 beginAtZero: true,
-                fontColor: "#fff",
+                fontColor: "#000",
               },
               gridLines: {
                 display: false,
@@ -66,7 +67,7 @@ export default {
         },
         legend: {
           display: false,
-          fontColor: "#fff",
+          fontColor: "#000",
         },
         responsive: true,
         maintainAspectRatio: false,

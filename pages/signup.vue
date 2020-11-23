@@ -151,6 +151,7 @@ export default {
 <style lang="scss" scoped>
 .title {
   color: white;
+  font-size: 50px !important;
 }
 
 .lp-image {
@@ -165,7 +166,7 @@ export default {
   background: -webkit-linear-gradient(top left, #2b2b2b 0%, #100f0f 100%);
   background: -moz-linear-gradient(top left, #2b2b2b 0%, #100f0f 100%);
   background: -o-linear-gradient(top left, #2b2b2b 0%, #100f0f 100%);
-  background: linear-gradient(to bottom right, #2b2b2b 0%, #100f0f 100%);
+  background: linear-gradient(to bottom right, #a7873f 0%, #681e7d 100%);
 
   width: 100%;
   height: 100%;
