@@ -66,9 +66,9 @@ export default {
    ** Nuxt.js modules
    */
   modules: ["nuxt-fontawesome", "@nuxtjs/dotenv"],
-  dotenv: {
-    filename: envPath
-  },
+//   dotenv: {
+//     filename: envPath
+//   },
   build: {
     loaders: {
       less: {
