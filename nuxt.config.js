@@ -14,7 +14,7 @@ export default {
   target: "server",
   env: {
     userApiEndpoit:
-      process.env.VUE_APP_USER_API_ENDPOIT || "http://localhost:8081",
+      "http://ambitious.nigoroku.net",
     todoApiEndpoit:
       process.env.VUE_APP_TODO_API_ENDPOIT || "http://localhost:8082",
     achievementApiEndpoit:
