@@ -37,6 +37,8 @@ jobs:
         run: yarn install
 
       - name: Genarate files
+        env:
+          NODE_ENV: 'production'
         run: yarn generate
 
       - name: Upload dist files to S3
