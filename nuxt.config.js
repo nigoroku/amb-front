@@ -1,5 +1,5 @@
-const envPath = `.env.${process.env.NODE_ENV || "production"}`;
-require("dotenv").config({ path: envPath });
+// const envPath = `.env.${process.env.NODE_ENV || "production"}`;
+// require("dotenv").config({ path: envPath });
 
 export default {
   /*
