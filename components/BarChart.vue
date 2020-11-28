@@ -3,24 +3,13 @@ import { Bar } from "vue-chartjs";
 
 export default {
   extends: Bar,
+  props: {
+    category_distribution: Array,
+  },
   data() {
     return {
       datacollection: {
-        labels: [
-          "クラウド",
-          "テスト",
-          "CI/CD",
-          "コーディング",
-          "デザイン",
-          "データベース",
-          "モバイル",
-          "マーケティング",
-          "AI",
-          "データ分析",
-          "VR / AR",
-          "フロントエンド",
-          "バックエンド",
-        ],
+        labels: [],
         datasets: [
           {
             label: "Data One",
@@ -29,7 +18,7 @@ export default {
             borderColor: "#c1c1c1",
             borderWidth: 1,
             pointBorderColor: "#c1c1c1",
-            data: [40, 20, 30, 50, 90, 10, 20, 40, 50, 70, 90, 100],
+            data: [],
           },
         ],
       },
@@ -67,6 +56,18 @@ export default {
         legend: {
           display: false,
         },
+        tooltips: {
+          callbacks: {
+            label: function (tooltipItem, data) {
+              return (
+                data.labels[tooltipItem.index] +
+                ": " +
+                data.datasets[0].data[tooltipItem.index] +
+                "h"
+              );
+            },
+          },
+        },
         responsive: true,
         maintainAspectRatio: false,
       },
@@ -74,6 +75,19 @@ export default {
   },
   mounted() {
     this.renderChart(this.datacollection, this.options);
+  },
+  watch: {
+    category_distribution(newCategories) {
+      // データ取得完了後に再描画する
+      let categoryNames = newCategories.map((c) => c.category_name);
+      let totalTimes = newCategories.map(
+        (c) => Math.round((c.total_time / 60) * 10) / 10
+      );
+      this.$set(this.datacollection, "labels", categoryNames);
+      this.$set(this.datacollection.datasets[0], "data", totalTimes);
+
+      this.renderChart(this.datacollection, this.options);
+    },
   },
 };
 </script>

@@ -51,7 +51,6 @@
             </a-form-model-item>
             <a-form-model-item label="所要時間">
               <a-time-picker
-                :default-open-value="moment('00:00', 'HH:mm')"
                 format="HH:mm"
                 v-model="inputForm.achievement.input_time"
                 placeholder="select time..."
@@ -88,7 +87,6 @@
             </a-form-model-item>
             <a-form-model-item label="所要時間">
               <a-time-picker
-                :default-open-value="moment('00:00', 'HH:mm')"
                 format="HH:mm"
                 v-model="outputForm.achievement.output_time"
                 placeholder="select time..."
@@ -129,6 +127,7 @@ import MultipleTagSelect from "@/components/MultipleTagSelect";
 import InputField from "@/components/InputField";
 import { mapState, mapGetters } from "vuex";
 import moment from "moment";
+import _ from "lodash";
 
 const horizontalLayout1 = {
   labelCol: { span: 2 },
@@ -154,7 +153,7 @@ export default {
         category_ids: [],
         default_categories: [],
         achievement: {
-          input_time: "",
+          input_time: null,
           reference_url: "",
           summary: "",
           user_id: "",
@@ -164,7 +163,7 @@ export default {
         category_ids: [],
         default_categories: [],
         achievement: {
-          output_time: "",
+          output_time: null,
           reference_url: "",
           summary: "",
           user_id: "",
@@ -206,7 +205,9 @@ export default {
           if (input == null) {
             return;
           }
-          self.inputForm.achievement.input_time = input.input_time;
+          self.inputForm.achievement.input_time = self.toStrTimeFromMinutes(
+            input.input_time
+          );
           self.inputForm.achievement.reference_url = input.reference_url;
           self.inputForm.achievement.summary = input.summary;
           self.inputForm.achievement.user_id = input.user_id;
@@ -231,7 +232,9 @@ export default {
           if (output == null) {
             return;
           }
-          self.outputForm.achievement.output_time = output.output_time;
+          self.outputForm.achievement.output_time = self.toStrTimeFromMinutes(
+            output.output_time
+          );
           self.outputForm.achievement.reference_url = output.reference_url;
           self.outputForm.achievement.summary = output.summary;
           self.outputForm.achievement.user_id = output.user_id;
@@ -259,10 +262,17 @@ export default {
     },
     updateInput(userId) {
       this.inputForm.achievement.user_id = userId;
-      console.log("inppppppp");
-      console.log(this.inputForm);
+
+      let submitForm = _.cloneDeep(this.inputForm);
+
+      if (submitForm.achievement.input_time != null) {
+        let timeStr = submitForm.achievement.input_time.format("HH:mm");
+        // 分に変換して登録する
+        submitForm.achievement.input_time = this.toMinutesFromTimeStr(timeStr);
+      }
+      console.log(submitForm);
       this.$http(process.env.achievementApiEndpoit)
-        .post("/api/v1/achievement/input/register", this.inputForm)
+        .post("/api/v1/achievement/input/register", submitForm)
         .then(function (response) {
           console.log(response.data);
         })
@@ -270,10 +280,16 @@ export default {
     },
     updateOutput(userId) {
       this.outputForm.achievement.user_id = userId;
-      console.log("outttttt");
-      console.log(this.outputForm);
+
+      let submitForm = _.cloneDeep(this.outputForm);
+
+      if (submitForm.achievement.output_time != null) {
+        let timeStr = submitForm.achievement.output_time.format("HH:mm");
+        // 分に変換して登録する
+        submitForm.achievement.output_time = this.toMinutesFromTimeStr(timeStr);
+      }
       this.$http(process.env.achievementApiEndpoit)
-        .post("/api/v1/achievement/output/register", this.outputForm)
+        .post("/api/v1/achievement/output/register", submitForm)
         .then(function (response) {
           console.log(response.data);
         })
@@ -323,6 +339,25 @@ export default {
     setOutputCategories(val) {
       this.outputForm.category_ids = [];
       val.split(",").forEach((v) => this.outputForm.category_ids.push(v));
+    },
+    // 「xx:xx」形式（文字列）→時間（数値）
+    toMinutesFromTimeStr(timeStr) {
+      if (timeStr == "" || timeStr.length < 5) {
+        return 0;
+      }
+      let hour = timeStr.slice(0, 2);
+      let min = timeStr.slice(-2);
+      // 分に変換して登録する
+      return Number(hour) * 60 + Number(min);
+    },
+    // 時間（数値）→「xx:xx」形式（文字列）
+    toStrTimeFromMinutes(minutes) {
+      if (minutes >= 24 * 60 || minutes < 0) {
+        return "";
+      }
+      var h = (minutes / 60) | 0,
+        m = minutes % 60 | 0;
+      return moment.utc().hours(h).minutes(m);
     },
   },
   computed: {

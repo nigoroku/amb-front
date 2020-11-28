@@ -3,6 +3,9 @@ import { HorizontalBar } from "vue-chartjs";
 
 export default {
   extends: HorizontalBar,
+  props: {
+    percents: Object,
+  },
   data() {
     return {
       datacollection: {
@@ -10,14 +13,14 @@ export default {
         datasets: [
           {
             label: "input",
-            data: [64],
+            data: [this.percents.input_percentag],
             backgroundColor: "#a7873f78",
             borderColor: "#a7873f",
             borderWidth: 1,
           },
           {
             label: "output",
-            data: [36],
+            data: [this.percents.output_percentag],
             backgroundColor: "#681e7d85",
             borderColor: "#681e7d",
             borderWidth: 1,
@@ -76,6 +79,18 @@ export default {
   },
   mounted() {
     this.renderChart(this.datacollection, this.options);
+  },
+  watch: {
+    percents(newPercents) {
+      // データ取得完了後に再描画する
+      this.$set(this.datacollection.datasets[0], "data", [
+        newPercents.input_percentag,
+      ]);
+      this.$set(this.datacollection.datasets[1], "data", [
+        newPercents.output_percentag,
+      ]);
+      this.renderChart(this.datacollection, this.options);
+    },
   },
 };
 </script>

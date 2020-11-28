@@ -20,7 +20,7 @@
       <a-col :span="8">
         <a-card class="no-border">
           <h2>総学習時間</h2>
-          <span id="total-time">{{ total_study_time }}</span
+          <span id="total-time">{{ total_learning_time }}</span
           ><span> 時間</span>
         </a-card>
       </a-col>
@@ -28,19 +28,22 @@
     <a-row>
       <a-col :span="24" class="gutter-box"
         ><a-card class="chart-card" style="border-bottom: none">
-          <horizontal-bar-chart style="height: 250px"></horizontal-bar-chart>
+          <horizontal-bar-chart
+            :percents="achievement_percentag"
+            style="height: 250px"
+          ></horizontal-bar-chart>
         </a-card>
       </a-col>
     </a-row>
     <a-row>
       <a-col :span="12" class="gutter-box">
         <a-card class="chart-card" style="border-right: none">
-          <bar-chart></bar-chart>
+          <bar-chart :category_distribution="category_distribution"></bar-chart>
         </a-card>
       </a-col>
       <a-col :span="12" class="gutter-box">
         <a-card class="chart-card">
-          <line-chart></line-chart>
+          <line-chart :date_unit="learning_transition.years"></line-chart>
         </a-card>
       </a-col>
     </a-row>
@@ -64,9 +67,21 @@ export default {
   },
   data() {
     return {
-      total_study_time: 154,
       account_name: "",
       introduction: "",
+      total_learning_time: 0,
+      achievement_percentag: {
+        input_percentag: 0,
+        input_total_time: 0,
+        output_percentag: 0,
+        output_total_time: 0,
+      },
+      category_distribution: [],
+      learning_transition: {
+        years: [],
+        months: [],
+        days: [],
+      },
     };
   },
   computed: {
@@ -81,9 +96,11 @@ export default {
     // アカウント情報取得
     this.findAccount(self);
 
-    // TODO:学習時間集計値取得
+    // 学習時間集計値取得
+    this.setLearningTimeAggregate();
 
-    // TODO:集計単位ごとの学習時間推移取得
+    // 集計単位ごとの学習時間推移取得
+    this.setLearningTimeTransition();
   },
   methods: {
     // アカウント情報取得
@@ -135,20 +152,36 @@ export default {
         .finally(function () {});
     },
     // 学習時間集計値取得
-    findLearningTimeAggregate(self) {
-      self
-        .$http(process.env.userApiEndpoit)
+    setLearningTimeAggregate() {
+      let self = this;
+      this.$http(process.env.achievementApiEndpoit)
         .get("/api/v1/achievement/aggregate?user_id=" + self.getUserId)
-        .then(function (response) {})
+        .then(function (response) {
+          let result = response.data.aggregate_results;
+          if (result.total_learning_time != 0) {
+            self.total_learning_time =
+              Math.round((result.total_learning_time / 60) * 10) / 10;
+          }
+          self.achievement_percentag = result.AchievementPercentag;
+          self.category_distribution = result.CategoryDistribution;
+        })
         .catch(function () {})
         .finally(function () {});
     },
     // 集計単位ごとの学習時間推移取得
-    findLearningTimeTransitionForAggregationUnit(self) {
-      self
-        .$http(process.env.userApiEndpoit)
-        .get("/api/v1/achievement/aggregate?user_id=" + self.getUserId)
-        .then(function (response) {})
+    setLearningTimeTransition() {
+      let self = this;
+      this.$http(process.env.achievementApiEndpoit)
+        .get(
+          "/api/v1/achievement/transition/aggregate?user_id=" + self.getUserId
+        )
+        .then(function (response) {
+          console.log(response.data.learning_transition);
+          let result = response.data.learning_transition;
+          self.learning_transition.years = result.YearLearningTransition;
+          self.learning_transition.months = result.MonthLearningTransition;
+          self.learning_transition.days = result.DaysLearningTransition;
+        })
         .catch(function () {})
         .finally(function () {});
     },

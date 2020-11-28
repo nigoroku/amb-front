@@ -1,5 +1,5 @@
-// const envPath = `.env.${process.env.NODE_ENV || "production"}`;
-// require("dotenv").config({ path: envPath });
+const envPath = `.env.${process.env.NODE_ENV || "production"}`;
+require("dotenv").config({ path: envPath });
 
 export default {
   /*
@@ -14,7 +14,7 @@ export default {
   target: "server",
   env: {
     userApiEndpoit:
-      "http://ambitious.nigoroku.net",
+      process.env.VUE_APP_USER_API_ENDPOIT || "http://localhost:8081",
     todoApiEndpoit:
       process.env.VUE_APP_TODO_API_ENDPOIT || "http://localhost:8082",
     achievementApiEndpoit:
@@ -66,9 +66,9 @@ export default {
    ** Nuxt.js modules
    */
   modules: ["nuxt-fontawesome", "@nuxtjs/dotenv"],
-//   dotenv: {
-//     filename: envPath
-//   },
+  dotenv: {
+    filename: envPath
+  },
   build: {
     loaders: {
       less: {
