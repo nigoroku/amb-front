@@ -1,7 +1,7 @@
 <template>
   <div id="charts-container" class="container">
     <a-row class="top-bar">
-      <a-col :span="8" style="padding-left: 30px">
+      <a-col :span="12" style="padding-left: 30px">
         <a-card class="no-border top-card">
           <div style="padding-top: 10px; margin-right: 5px">
             <div class="photo-to-circle"></div>
@@ -17,12 +17,29 @@
           </div>
         </a-card>
       </a-col>
-      <a-col :span="8">
+      <a-col :span="10" style="display: flex">
         <a-card class="no-border">
           <h2>総学習時間</h2>
           <span id="total-time">{{ total_learning_time }}</span
           ><span> 時間</span>
         </a-card>
+        <div class="time-box-list">
+          <a-card class="left-border">
+            <h3>今週の学習時間</h3>
+            <span class="unit-time">{{ calcWeekTotalTime }}</span
+            ><span> 時間</span>
+          </a-card>
+          <a-card class="left-border">
+            <h3>今月の学習時間</h3>
+            <span class="unit-time">{{ calcMonthTotalTime }}</span
+            ><span> 時間</span>
+          </a-card>
+          <a-card class="left-border">
+            <h3>今年の学習時間</h3>
+            <span class="unit-time">{{ calcYearTotalTime }}</span
+            ><span> 時間</span>
+          </a-card>
+        </div>
       </a-col>
     </a-row>
     <a-row>
@@ -43,7 +60,16 @@
       </a-col>
       <a-col :span="12" class="gutter-box">
         <a-card class="chart-card">
-          <line-chart :date_unit="learning_transition.years"></line-chart>
+          <a-select
+            default-value="days"
+            class="unit-selector"
+            @change="handleUnitChange"
+          >
+            <a-select-option value="days"> 週 </a-select-option>
+            <a-select-option value="month"> 月 </a-select-option>
+            <a-select-option value="year"> 年 </a-select-option>
+          </a-select>
+          <line-chart :date_unit="selected_learning_transition"></line-chart>
         </a-card>
       </a-col>
     </a-row>
@@ -82,10 +108,34 @@ export default {
         months: [],
         days: [],
       },
+      selected_learning_transition: [],
     };
   },
   computed: {
     ...mapGetters(["getUserId"]),
+    calcWeekTotalTime: function () {
+      let times = this.learning_transition.days.map((l) => l.time);
+      let result = times.reduce(function (prev, current, i, arr) {
+        return prev + current;
+      }, 0);
+      return Math.round((result / 60) * 10) / 10;
+    },
+    calcMonthTotalTime: function () {
+      if (this.learning_transition.months.length < 12) {
+        return 0;
+      }
+      return (
+        Math.round((this.learning_transition.months[11].time / 60) * 10) / 10
+      );
+    },
+    calcYearTotalTime: function () {
+      if (this.learning_transition.months.length < 12) {
+        return 0;
+      }
+      return (
+        Math.round((this.learning_transition.years[11].time / 60) * 10) / 10
+      );
+    },
   },
   mounted: function () {
     if (this.getUserId == null) {
@@ -176,14 +226,23 @@ export default {
           "/api/v1/achievement/transition/aggregate?user_id=" + self.getUserId
         )
         .then(function (response) {
-          console.log(response.data.learning_transition);
           let result = response.data.learning_transition;
           self.learning_transition.years = result.YearLearningTransition;
           self.learning_transition.months = result.MonthLearningTransition;
           self.learning_transition.days = result.DaysLearningTransition;
+          self.selected_learning_transition = self.learning_transition.days;
         })
         .catch(function () {})
         .finally(function () {});
+    },
+    handleUnitChange(selected) {
+      if (selected == "days") {
+        this.selected_learning_transition = this.learning_transition.days;
+      } else if (selected == "month") {
+        this.selected_learning_transition = this.learning_transition.months;
+      } else {
+        this.selected_learning_transition = this.learning_transition.years;
+      }
     },
   },
 };
@@ -225,11 +284,27 @@ export default {
 .no-border {
   border: none;
 }
+.left-border {
+  border: none;
+}
 .account_name {
   font-size: 24px;
   display: block;
 }
 .introduction {
   font-size: 13px;
+}
+.unit-selector {
+  position: absolute;
+  left: 20px;
+  top: 15px;
+}
+.time-box-list {
+  display: flex;
+  margin-top: 45px;
+  margin-left: 60px;
+}
+.unit-time {
+  font-size: 30px;
 }
 </style>

@@ -27,7 +27,7 @@ export default {
       options: {
         title: {
           display: true,
-          text: "学習時間推移",
+          text: "学習時間推移（h）",
           fontSize: 16,
           fontColor: "#000",
         },
@@ -82,7 +82,6 @@ export default {
   watch: {
     date_unit(newUnit) {
       // データ取得完了後に再描画する
-      console.log(newUnit);
       let labels = newUnit.map((c) => c.label);
       let times = newUnit.map((c) => Math.round((c.time / 60) * 10) / 10);
       this.$set(this.datacollection, "labels", labels);

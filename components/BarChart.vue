@@ -25,7 +25,7 @@ export default {
       options: {
         title: {
           display: true,
-          text: "学習カテゴリ分布",
+          text: "学習カテゴリ分布（h）",
           fontSize: 16,
           fontColor: "#000",
         },

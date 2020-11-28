@@ -14,16 +14,12 @@ export default {
           {
             label: "input",
             data: [this.percents.input_percentag],
-            backgroundColor: "#a7873f78",
-            borderColor: "#a7873f",
-            borderWidth: 1,
+            backgroundColor: "#e6b34078",
           },
           {
             label: "output",
             data: [this.percents.output_percentag],
             backgroundColor: "#681e7d85",
-            borderColor: "#681e7d",
-            borderWidth: 1,
           },
         ],
       },
