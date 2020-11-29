@@ -1,8 +1,10 @@
 <script>
-import { Bar } from "vue-chartjs";
+import { HorizontalBar } from "vue-chartjs";
+
+let color = "#46BCC1";
 
 export default {
-  extends: Bar,
+  extends: HorizontalBar,
   props: {
     category_distribution: Array,
   },
@@ -13,11 +15,11 @@ export default {
         datasets: [
           {
             label: "Data One",
-            backgroundColor: "rgba(215,215,215,0.5)",
-            pointBackgroundColor: "#c1c1c1",
-            borderColor: "#c1c1c1",
-            borderWidth: 1,
-            pointBorderColor: "#c1c1c1",
+            backgroundColor: color,
+            pointBackgroundColor: color,
+            // borderColor: "rgba(189,51,181, 0.6)",
+            // borderWidth: 1,
+            // pointBorderColor: "rgba(189,51,181, 0.7)",
             data: [],
           },
         ],

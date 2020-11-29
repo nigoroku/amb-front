@@ -1,6 +1,8 @@
 <script>
 import { Line } from "vue-chartjs";
 
+let color = "#46BCC1";
+
 export default {
   extends: Line,
   props: {
@@ -14,11 +16,11 @@ export default {
           {
             label: "Data One",
             fill: true,
-            pointBackgroundColor: "#d2d2d2bf",
+            pointBackgroundColor: color,
             borderWidth: 1,
-            borderColor: "#c1c1c1",
-            pointBorderColor: "#c1c1c1",
-            backgroundColor: "rgba(215,215,215,0.5)",
+            borderColor: color,
+            pointBorderColor: color,
+            backgroundColor: color,
             lineTension: 0,
             data: [],
           },

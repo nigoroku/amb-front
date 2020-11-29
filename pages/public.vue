@@ -39,7 +39,7 @@
       </a-col>
     </a-row>
     <a-row>
-      <a-col :span="24" class="gutter-box"
+      <a-col :span="24" class="gutter-top-box"
         ><a-card class="chart-card" style="border-bottom: none">
           <horizontal-bar-chart
             :percents="achievement_percentag"
@@ -49,12 +49,12 @@
       </a-col>
     </a-row>
     <a-row>
-      <a-col :span="12" class="gutter-box">
+      <a-col :span="12" class="gutter-left-box">
         <a-card class="chart-card" style="border-right: none">
           <bar-chart :category_distribution="category_distribution"></bar-chart>
         </a-card>
       </a-col>
-      <a-col :span="12" class="gutter-box">
+      <a-col :span="12" class="gutter-right-box">
         <a-card class="chart-card">
           <a-select
             default-value="days"
@@ -292,7 +292,6 @@ export default {
       this.$http(process.env.userApiEndpoit)
         .post("/api/v1/user/share/regite", this.shareForm)
         .then(function (response) {
-          console.log(response.data);
           self.$message.success("公開URLにアクセスできるようになりました", 2);
         })
         .catch(function () {})
@@ -327,8 +326,18 @@ export default {
     margin-bottom: 0px;
   }
 }
-.gutter-box {
-  padding: 15px;
+.gutter-top-box {
+  padding: 10px 150px;
+}
+.gutter-left-box {
+  padding-left: 150px;
+  padding-right: 5px;
+  padding-bottom: 20px;
+}
+.gutter-right-box {
+  padding-right: 150px;
+  padding-left: 5px;
+  padding-bottom: 20px;
 }
 #total-time {
   font-size: 60px;
