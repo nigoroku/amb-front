@@ -70,7 +70,7 @@ const Cookie = process.client ? require("js-cookie") : undefined;
 
 export default {
   layout: "top_page",
-  middleware: "authenticated",
+  middleware: "notAuthenticated",
   data: () => ({
     email: "",
     password: "",
