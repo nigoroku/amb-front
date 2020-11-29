@@ -44,6 +44,7 @@
       <a-dropdown class="share-dropdown">
         <a class="share-dropdown-link" @click="(e) => e.preventDefault()">
           <font-awesome-icon class="share-icon" icon="share-square" />
+          共有する
         </a>
         <a-menu slot="overlay" class="share-links">
           <a-menu-item>
@@ -336,6 +337,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+#charts-container {
+  width: 75%;
+  margin: auto;
+}
 .photo-to-circle {
   background-image: url("../assets/img/no_photo.png");
   background-size: cover;
@@ -352,15 +357,14 @@ export default {
   }
 }
 .gutter-top-box {
-  padding: 10px 150px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 .gutter-left-box {
-  padding-left: 150px;
   padding-right: 5px;
   padding-bottom: 20px;
 }
 .gutter-right-box {
-  padding-right: 150px;
   padding-left: 5px;
   padding-bottom: 20px;
 }
@@ -378,6 +382,7 @@ export default {
 .top-bar {
   background: #fff;
   border-bottom: 1px solid #dcdcdc;
+  margin-top: 15px;
 }
 .no-border {
   border: none;
@@ -415,7 +420,8 @@ export default {
   }
 }
 .share-icon {
-  font-size: 22px;
+  font-size: 18px;
+  margin-right: 2px;
 }
 .share-modal {
   & .share-url-input {

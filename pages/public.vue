@@ -43,7 +43,7 @@
         ><a-card class="chart-card" style="border-bottom: none">
           <horizontal-bar-chart
             :percents="achievement_percentag"
-            style="height: 250px"
+            style="height: 180px"
           ></horizontal-bar-chart>
         </a-card>
       </a-col>
@@ -311,6 +311,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+#charts-container {
+  width: 75%;
+  margin: auto;
+}
 .photo-to-circle {
   background-image: url("../assets/img/no_photo.png");
   background-size: cover;
@@ -327,15 +331,14 @@ export default {
   }
 }
 .gutter-top-box {
-  padding: 10px 150px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 .gutter-left-box {
-  padding-left: 150px;
   padding-right: 5px;
   padding-bottom: 20px;
 }
 .gutter-right-box {
-  padding-right: 150px;
   padding-left: 5px;
   padding-bottom: 20px;
 }
@@ -353,6 +356,7 @@ export default {
 .top-bar {
   background: #fff;
   border-bottom: 1px solid #dcdcdc;
+  margin-top: 15px;
 }
 .no-border {
   border: none;
@@ -379,39 +383,5 @@ export default {
 }
 .unit-time {
   font-size: 30px;
-}
-.share-dropdown {
-  position: absolute;
-  right: 20px;
-  top: 20px;
-
-  & .share-links i {
-    margin-right: 5px;
-  }
-}
-.share-icon {
-  font-size: 22px;
-}
-.share-modal {
-  & .share-url-input {
-    width: 70%;
-    color: #1e8e3e;
-    background: #d9efdf;
-  }
-  & .url-copy-button {
-    color: #1a73e8;
-    background: #d2e0f3;
-    border: none;
-    padding: 5px 8px;
-    cursor: pointer;
-  }
-  & h2 {
-    margin-top: 5px;
-    margin-bottom: 5px;
-  }
-  & .share-url-box {
-    margin-top: 30px;
-    margin-bottom: 10px;
-  }
 }
 </style>

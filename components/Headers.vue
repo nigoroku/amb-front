@@ -31,13 +31,14 @@
         <a-menu mode="horizontal">
           <a-sub-menu>
             <span slot="title" class="submenu-title-wrapper"
-              ><font-awesome-icon icon="users" /> 他の人の積み上げ</span
+              ><font-awesome-icon icon="users" /> 他の人のインプット /
+              アウトプット</span
             >
             <a-menu-item key="1">
-              <nuxt-link to="/inputList">インプット実績</nuxt-link>
+              <nuxt-link to="/inputList">インプットタイムライン</nuxt-link>
             </a-menu-item>
             <a-menu-item key="2">
-              <nuxt-link to="/outputList">アウトプット実績</nuxt-link>
+              <nuxt-link to="/outputList">アウトプットタイムライン</nuxt-link>
             </a-menu-item>
           </a-sub-menu>
         </a-menu>

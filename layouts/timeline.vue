@@ -46,8 +46,6 @@ export default {
   padding: 24px;
 }
 .content-box {
-  background: #fff;
-  padding: 24px;
   margin: auto;
   width: 75%;
 }

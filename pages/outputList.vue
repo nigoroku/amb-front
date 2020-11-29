@@ -1,41 +1,63 @@
 <template>
-  <a-list
-    item-layout="vertical"
-    size="large"
-    :pagination="pagination"
-    :data-source="listData"
-  >
-    <a-list-item slot="renderItem" key="item.account_name" slot-scope="item">
-      <template v-for="{ type, text } in actions" slot="actions">
-        <span :key="type">
-          <a-icon :type="type" style="margin-right: 8px" />
-          {{ text }}
-        </span>
-      </template>
-      <a-list-item-meta :description="item.introduction">
-        <a slot="title" :href="item.href">{{ item.account_name }}</a>
-        <a-avatar slot="avatar" :src="item.avatar" />
-      </a-list-item-meta>
-      <div v-if="item.summary">
-        <h4 style="font-weight: bold">{{ item.date }}のアウトプット</h4>
+  <div>
+    <div class="content-box search-box">
+      <h3 style="padding-top: 4px">
+        <font-awesome-icon
+          icon="align-left"
+          style="margin-right: 8px"
+        />アウトプットタイムライン
+      </h3>
+      <a-input-search
+        placeholder="キーワードで探す"
+        style="width: 300px"
+        v-model="search_text"
+        @change="onSearch"
+      />
+    </div>
+    <div class="content-box">
+      <a-list
+        item-layout="vertical"
+        size="large"
+        :pagination="pagination"
+        :data-source="searchedList"
+      >
+        <a-list-item
+          slot="renderItem"
+          key="item.account_name"
+          slot-scope="item"
+        >
+          <template v-for="{ icon, text } in actions" slot="actions">
+            <span :key="icon">
+              <font-awesome-icon :icon="icon" style="margin-right: 8px" />
+              {{ text }}
+            </span>
+          </template>
+          <a-list-item-meta :description="item.introduction">
+            <a slot="title" :href="item.href">{{ item.account_name }}</a>
+            <a-avatar slot="avatar" :src="item.avatar" />
+          </a-list-item-meta>
+          <div v-if="item.summary">
+            <h4 style="font-weight: bold">{{ item.date }}のアウトプット</h4>
 
-        <p>{{ item.summary }}</p>
-      </div>
-      <div v-if="item.output_page">
-        <a v-bind:href="item.output_page.url" target="_blank">
-          <a-card class="ref-link">
-            <div class="ref-link-body">
-              <div>
-                <h3>{{ item.output_page.title }}</h3>
-                <span>{{ item.output_page.description }}</span>
-              </div>
-              <img v-bind:src="item.output_page.image_url" />
-            </div>
-          </a-card>
-        </a>
-      </div>
-    </a-list-item>
-  </a-list>
+            <p>{{ item.summary }}</p>
+          </div>
+          <div v-if="item.output_page">
+            <a v-bind:href="item.output_page.url" target="_blank">
+              <a-card class="ref-link">
+                <div class="ref-link-body">
+                  <div>
+                    <h3>{{ item.output_page.title }}</h3>
+                    <span>{{ item.output_page.description }}</span>
+                  </div>
+                  <img v-bind:src="item.output_page.image_url" />
+                </div>
+              </a-card>
+            </a>
+          </div>
+        </a-list-item>
+      </a-list>
+    </div>
+  </div>
 </template>
 <script>
 import moment from "moment";
@@ -45,6 +67,8 @@ export default {
   data() {
     return {
       listData: [],
+      searchedList: [],
+      search_text: "",
       pagination: {
         onChange: (page) => {
           // console.log(page);
@@ -52,9 +76,8 @@ export default {
         pageSize: 10,
       },
       actions: [
-        { type: "star-o", text: "156" },
-        { type: "like-o", text: "156" },
-        { type: "message", text: "2" },
+        { icon: "thumbs-up", text: "LGTM" },
+        { icon: "layer-group", text: "ストック" },
       ],
     };
   },
@@ -64,7 +87,6 @@ export default {
       .get("/api/v1/boad/list")
       .then(function (response) {
         let boad_list = response.data.boad_list;
-        console.log(boad_list);
         boad_list.forEach((l) => {
           let list = {};
           let user = l.user;
@@ -108,14 +130,40 @@ export default {
           } else {
             self.listData.push(list);
           }
+          // 検索用のリストを別途保持する
+          self.searchedList = self.listData;
         });
       })
       .catch(function () {})
       .finally(function () {});
   },
+  methods: {
+    onSearch(e) {
+      console.log(e);
+      let val = this.search_text;
+      this.searchedList = this.listData.filter(
+        (l) =>
+          (l.account_name != null && l.account_name.includes(val)) ||
+          (l.introduction != null && l.introduction.includes(val)) ||
+          (l.summary != null && l.summary.includes(val)) ||
+          (l.date && l.date.includes(val))
+      );
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
+.content-box {
+  background: #fff;
+  padding: 10px 24px;
+}
+
+.search-box {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #e4e4e4;
+}
+
 .ref-link {
   width: 100%;
 
