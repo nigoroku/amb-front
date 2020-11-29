@@ -78,6 +78,9 @@ export default {
   },
   watch: {
     category_distribution(newCategories) {
+      if (newCategories == null) {
+        return;
+      }
       // データ取得完了後に再描画する
       let categoryNames = newCategories.map((c) => c.category_name);
       let totalTimes = newCategories.map(

@@ -1,22 +1,8 @@
 <template>
   <a-layout id="components-layout-demo-custom-trigger" style="height: 100%">
     <a-layout>
-      <transition name="top" mode="out-in">
-        <a-alert
-          v-show="isShowAlert"
-          message="本日の実績を登録しました！"
-          description="明日もまたがんばりましょう！"
-          type="success"
-          closable
-          show-icon
-          class="alert-message"
-        />
-      </transition>
-      <headers @isCollapsed="collapsed = !collapsed"></headers>
       <div class="content">
-        <div class="content-box">
-          <Nuxt />
-        </div>
+        <Nuxt />
       </div>
     </a-layout>
   </a-layout>
@@ -41,15 +27,15 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.content {
+body {
   background: #e8e8e8;
-  padding: 24px;
 }
-.content-box {
-  background: #fff;
-  padding: 24px;
-  margin-left: 100px;
-  margin-right: 100px;
+
+#__nuxt {
+  height: 100%;
+}
+#__layout {
+  height: 100%;
 }
 #components-layout-demo-custom-trigger .trigger {
   font-size: 18px;
@@ -94,5 +80,9 @@ export default {
 .top-enter,
 .top-leave-to {
   transform: translateY(-100vh) translateY(0px);
+}
+
+.content {
+  background: #e8e8e8;
 }
 </style>

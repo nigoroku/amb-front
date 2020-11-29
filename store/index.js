@@ -14,7 +14,8 @@ export const state = () => ({
       date: "",
       details: []
     }
-  ]
+  ],
+  publicUserId: ""
 });
 
 export const getters = {
@@ -24,6 +25,9 @@ export const getters = {
     }
     let payLoad = state.auth.accessToken.split(".")[1];
     return JSON.parse(atob(payLoad)).id;
+  },
+  getPublicUserId: state => {
+    return state.publicUserId;
   }
 };
 
@@ -96,6 +100,9 @@ export const mutations = {
     if (state.locales.includes(locale)) {
       state.locale = locale;
     }
+  },
+  setPublicUserId(state, payload) {
+    state.publicUserId = payload;
   }
 };
 

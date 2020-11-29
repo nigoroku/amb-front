@@ -1,4 +1,5 @@
 <template>
+  <!-- TODO:コンポーネント化すべき -->
   <div id="charts-container" class="container">
     <a-row class="top-bar">
       <a-col :span="10" style="padding-left: 30px">
@@ -7,11 +8,6 @@
             <div class="photo-to-circle"></div>
           </div>
           <div class="account-info">
-            <div style="margin-top: 8px">
-              <nuxt-link to="/account"
-                ><font-awesome-icon icon="edit" /> 編集する</nuxt-link
-              >
-            </div>
             <span class="account_name">{{ account_name }}</span>
             <p class="introduction">{{ introduction }}</p>
           </div>
@@ -41,18 +37,6 @@
           </a-card>
         </div>
       </a-col>
-      <a-dropdown class="share-dropdown">
-        <a class="share-dropdown-link" @click="(e) => e.preventDefault()">
-          <font-awesome-icon class="share-icon" icon="share-square" />
-        </a>
-        <a-menu slot="overlay" class="share-links">
-          <a-menu-item>
-            <a href="#" @click="createShareURLToken"
-              ><font-awesome-icon icon="link" /> 公開URLを発行する</a
-            >
-          </a-menu-item>
-        </a-menu>
-      </a-dropdown>
     </a-row>
     <a-row>
       <a-col :span="24" class="gutter-box"
@@ -85,38 +69,6 @@
         </a-card>
       </a-col>
     </a-row>
-    <a-modal
-      :visible="isShowShareModal"
-      :confirm-loading="confirmShareLoading"
-      @cancel="handleShareCancel"
-      width="40%"
-      centered
-      :maskStyle="maskStyle"
-      class="share-modal"
-    >
-      <h2><font-awesome-icon icon="link" /> リンクを取得する</h2>
-      <div class="share-url-box">
-        <a-input class="share-url-input" v-model="shareUrl" />
-        <button type="button" class="url-copy-button" @click="onLinkCopy">
-          リンクをコピー
-        </button>
-      </div>
-      <a-alert
-        message="このリンクを知っているインターネット上の全員が閲覧できます"
-        type="info"
-        show-icon
-      />
-      <template slot="footer">
-        <a-button key="back" @click="handleShareCancel">キャンセル</a-button>
-        <a-button
-          key="submit"
-          type="primary"
-          :loading="confirmShareLoading"
-          @click="handleShareOk"
-          >公開する</a-button
-        >
-      </template>
-    </a-modal>
   </div>
 </template>
 
@@ -128,7 +80,7 @@ import ChartWithAnnotation from "@/components/ChartWithAnnotation";
 import { mapGetters } from "vuex";
 
 export default {
-  middleware: "authenticated",
+  layout: "public",
   components: {
     ChartWithAnnotation,
     LineChart,
@@ -160,10 +112,11 @@ export default {
         user_id: "",
         token: "",
       },
+      pub_user_id: "",
     };
   },
   computed: {
-    ...mapGetters(["getUserId"]),
+    ...mapGetters(["getPublicUserId"]),
     calcWeekTotalTime: function () {
       let times = this.learning_transition.days.map((l) => l.time);
       let result = times.reduce(function (prev, current, i, arr) {
@@ -188,30 +141,52 @@ export default {
       );
     },
     shareUrl: function () {
-      return process.env.frontEndpoit + "/public?token=" + this.shareForm.token;
+      return process.env.userApiEndpoit + "/mypage/" + this.shareForm.token;
     },
   },
-  mounted: function () {
-    if (this.getUserId == null) {
-      return;
-    }
-
+  created: function () {
     let self = this;
-    // アカウント情報取得
-    this.findAccount(self);
+    this.$http(process.env.userApiEndpoit)
+      .get("/api/v1/user" + this.$route.fullPath)
+      .then(function (response) {
+        console.log("test");
+        let userId = response.data.user_id;
+        if (userId != null && userId != "") {
+          self.$store.commit("setPublicUserId", { publicUserId: userId });
+        } else {
+          self.$router.push("/notfound");
+        }
+      })
+      .catch(function () {
+        self.$router.push("/notfound");
+      })
+      .finally(function () {});
+  },
+  watch: {
+    getPublicUserId(newVal) {
+      if (newVal == null) {
+        return;
+      }
 
-    // 学習時間集計値取得
-    this.setLearningTimeAggregate();
+      this.pub_user_id = newVal.publicUserId;
 
-    // 集計単位ごとの学習時間推移取得
-    this.setLearningTimeTransition();
+      let self = this;
+      // アカウント情報取得
+      this.findAccount(self);
+
+      // 学習時間集計値取得
+      this.setLearningTimeAggregate();
+
+      // 集計単位ごとの学習時間推移取得
+      this.setLearningTimeTransition();
+    },
   },
   methods: {
     // アカウント情報取得
     findAccount(self) {
       self
         .$http(process.env.userApiEndpoit)
-        .get("/api/v1/user/account?user_id=" + self.getUserId)
+        .get("/api/v1/user/account?user_id=" + self.pub_user_id)
         .then(function (response) {
           let account = response.data.account;
           self.account_name = account.account_name;
@@ -259,7 +234,7 @@ export default {
     setLearningTimeAggregate() {
       let self = this;
       this.$http(process.env.achievementApiEndpoit)
-        .get("/api/v1/achievement/aggregate?user_id=" + self.getUserId)
+        .get("/api/v1/achievement/aggregate?user_id=" + self.pub_user_id)
         .then(function (response) {
           let result = response.data.aggregate_results;
           if (result.total_learning_time != 0) {
@@ -277,7 +252,7 @@ export default {
       let self = this;
       this.$http(process.env.achievementApiEndpoit)
         .get(
-          "/api/v1/achievement/transition/aggregate?user_id=" + self.getUserId
+          "/api/v1/achievement/transition/aggregate?user_id=" + self.pub_user_id
         )
         .then(function (response) {
           let result = response.data.learning_transition;
@@ -301,7 +276,7 @@ export default {
     createShareURLToken() {
       let self = this;
       this.$http(process.env.userApiEndpoit)
-        .get("/api/v1/user/share?user_id=" + self.getUserId)
+        .get("/api/v1/user/share?user_id=" + self.pub_user_id)
         .then(function (response) {
           let token = response.data.share_token;
           self.shareForm.token = token;
@@ -313,7 +288,7 @@ export default {
     handleShareOk(e) {
       this.confirmLoading = true;
       const self = this;
-      this.shareForm.user_id = this.getUserId;
+      this.shareForm.user_id = this.pub_user_id;
       this.$http(process.env.userApiEndpoit)
         .post("/api/v1/user/share/regite", this.shareForm)
         .then(function (response) {

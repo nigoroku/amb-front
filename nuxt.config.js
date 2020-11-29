@@ -13,6 +13,7 @@ export default {
    */
   target: "server",
   env: {
+    frontEndpoit: process.env.VUE_APP_FRONT_ENDPOIT || "http://localhost:3000",
     userApiEndpoit:
       process.env.VUE_APP_USER_API_ENDPOIT || "http://localhost:8081",
     todoApiEndpoit:
@@ -65,7 +66,7 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: ["nuxt-fontawesome", "@nuxtjs/dotenv"],
+  modules: ["nuxt-fontawesome", "@nuxtjs/dotenv", "nuxt-clipboard2"],
   dotenv: {
     filename: envPath
   },
