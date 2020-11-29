@@ -48,8 +48,8 @@ export default {
 .content-box {
   background: #fff;
   padding: 24px;
-  margin-left: 100px;
-  margin-right: 100px;
+  margin: auto;
+  width: 75%;
 }
 #components-layout-demo-custom-trigger .trigger {
   font-size: 18px;

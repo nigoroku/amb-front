@@ -314,8 +314,8 @@ export default {
 .photo-to-circle {
   background-image: url("../assets/img/no_photo.png");
   background-size: cover;
-  width: 100px;
-  height: 100px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   background-position: left top;
   border: 2px solid #f3f3f3;
