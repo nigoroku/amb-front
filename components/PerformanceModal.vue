@@ -291,6 +291,7 @@ export default {
             return String(c.category_id);
           });
           self.inputForm.default_categories = category_ids;
+          self.inputForm.category_ids = category_ids;
         })
         .catch(function (e) {
           console.log(e);
@@ -318,6 +319,7 @@ export default {
             return String(c.category_id);
           });
           self.outputForm.default_categories = category_ids;
+          self.outputForm.category_ids = category_ids;
         })
         .catch(function (e) {
           console.log(e);
@@ -386,7 +388,7 @@ export default {
               self.$store.commit("toggleAlert");
               setTimeout(() => {
                 self.$store.commit("toggleAlert");
-              }, 3500);
+              }, 2500);
             }, 2000);
           });
       } catch {
@@ -411,7 +413,7 @@ export default {
               self.$store.commit("toggleAlert");
               setTimeout(() => {
                 self.$store.commit("toggleAlert");
-              }, 3500);
+              }, 2500);
             }, 2000);
           });
       } catch {
@@ -436,7 +438,7 @@ export default {
               self.$store.commit("toggleAlert");
               setTimeout(() => {
                 self.$store.commit("toggleAlert");
-              }, 3500);
+              }, 2500);
             }, 2000);
           });
       } catch {
@@ -521,6 +523,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .modal-footer {
-  margin-left: 330px;
+  width: 62.5%;
+  text-align: right;
 }
 </style>
