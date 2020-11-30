@@ -37,7 +37,7 @@
             </a-form-model-item>
           </a-form-model>
         </section>
-        <div>
+        <div v-if="todos.length != 0">
           <a-button key="back" @click="handleCancel">キャンセル</a-button>
           <a-button
             key="submit"
