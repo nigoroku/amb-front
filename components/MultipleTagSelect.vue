@@ -1,7 +1,7 @@
 <template>
   <a-select
     v-model="selected"
-    mode="tags"
+    mode="multiple"
     style="width: 100%"
     placeholder="select category..."
     @change="handleChange"
@@ -10,8 +10,9 @@
       v-for="c in categories"
       :key="String(c.category_id)"
       :value="String(c.category_id)"
-      :style="{color: c.color_code}"
-    >{{ c.name }}</a-select-option>
+      :style="{ color: c.color_code }"
+      >{{ c.name }}</a-select-option
+    >
   </a-select>
 </template>
 <script>

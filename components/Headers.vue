@@ -17,7 +17,9 @@
       "
     >
       <div class="top-menu-left">
-        <img src="@/assets/img/logo.png" style="width: 140px; padding: 2px" />
+        <nuxt-link to="/">
+          <img src="@/assets/img/logo.png" style="width: 120px; padding: 2px" />
+        </nuxt-link>
         <a-menu mode="horizontal" v-show="auth">
           <a-menu-item key="4" @click="showTodoModal"
             ><font-awesome-icon icon="external-link-alt" /> 今日の目標を登録する

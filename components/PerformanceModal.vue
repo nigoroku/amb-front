@@ -4,11 +4,12 @@
     :visible="isShowPerformanceModal"
     :confirm-loading="confirmLoading"
     @cancel="handleCancel"
+    :footer="null"
     width="60%"
   >
-    <section class="modal-card-body">
-      <a-tabs default-active-key="1">
-        <a-tab-pane key="1" tab="目標達成状況">
+    <a-tabs default-active-key="1">
+      <a-tab-pane key="1" tab="目標達成状況">
+        <section class="modal-card-body">
           <p v-if="todos.length == 0">まだ目標が登録されていません。</p>
           <a-form-model
             v-if="todos.length > 0"
@@ -35,28 +36,48 @@
               </a-row>
             </a-form-model-item>
           </a-form-model>
-        </a-tab-pane>
-        <a-tab-pane key="2" tab="今日のInput">
+        </section>
+        <div>
+          <a-button key="back" @click="handleCancel">キャンセル</a-button>
+          <a-button
+            key="submit"
+            type="primary"
+            :loading="confirmLoading"
+            @click="handleTodoOk"
+            >更新する</a-button
+          >
+        </div>
+      </a-tab-pane>
+      <a-tab-pane key="2" tab="今日のInput">
+        <section class="modal-card-body">
           <a-form-model
             ref="inputForm"
+            :rules="rules"
             :model="inputForm"
             v-bind="formItemLayout2"
           >
-            <a-form-model-item label="カテゴリ">
+            <a-form-model-item prop="category_ids" required label="カテゴリ">
               <multiple-tag-select
                 :categories="categories"
                 :default_categories="inputForm.default_categories"
                 @select="setInputCategories"
               />
             </a-form-model-item>
-            <a-form-model-item label="所要時間">
+            <a-form-model-item
+              prop="achievement.input_time"
+              required
+              label="所要時間"
+            >
               <a-time-picker
                 format="HH:mm"
                 v-model="inputForm.achievement.input_time"
                 placeholder="select time..."
               ></a-time-picker>
             </a-form-model-item>
-            <a-form-model-item label="参考 URL">
+            <a-form-model-item
+              prop="achievement.reference_url"
+              label="参考 URL"
+            >
               <a-input
                 placeholder="reference URL..."
                 v-model="inputForm.achievement.reference_url"
@@ -71,28 +92,48 @@
               />
             </a-form-model-item>
           </a-form-model>
-        </a-tab-pane>
-        <a-tab-pane key="3" tab="今日のOutput" force-render>
+        </section>
+        <div class="modal-footer">
+          <a-button key="back" @click="handleCancel">キャンセル</a-button>
+          <a-button
+            key="submit"
+            type="primary"
+            :loading="confirmLoading"
+            @click="handleInputOk"
+            >更新する</a-button
+          >
+        </div>
+      </a-tab-pane>
+      <a-tab-pane key="3" tab="今日のOutput" force-render>
+        <section class="modal-card-body">
           <a-form-model
             ref="outputForm"
+            :rules="rules"
             :model="outputForm"
             v-bind="formItemLayout2"
           >
-            <a-form-model-item label="カテゴリ" :categories="categories">
+            <a-form-model-item prop="category_ids" required label="カテゴリ">
               <multiple-tag-select
                 :categories="categories"
                 :default_categories="outputForm.default_categories"
                 @select="setOutputCategories"
               />
             </a-form-model-item>
-            <a-form-model-item label="所要時間">
+            <a-form-model-item
+              prop="achievement.output_time"
+              required
+              label="所要時間"
+            >
               <a-time-picker
                 format="HH:mm"
                 v-model="outputForm.achievement.output_time"
                 placeholder="select time..."
               ></a-time-picker>
             </a-form-model-item>
-            <a-form-model-item label="参考 URL">
+            <a-form-model-item
+              prop="achievement.reference_url"
+              label="参考 URL"
+            >
               <a-input
                 placeholder="reference URL..."
                 v-model="outputForm.achievement.reference_url"
@@ -107,19 +148,19 @@
               />
             </a-form-model-item>
           </a-form-model>
-        </a-tab-pane>
-      </a-tabs>
-    </section>
-    <template slot="footer">
-      <a-button key="back" @click="handleCancel">キャンセル</a-button>
-      <a-button
-        key="submit"
-        type="primary"
-        :loading="confirmLoading"
-        @click="handleOk"
-        >更新する</a-button
-      >
-    </template>
+        </section>
+        <div class="modal-footer">
+          <a-button key="back" @click="handleCancel">キャンセル</a-button>
+          <a-button
+            key="submit"
+            type="primary"
+            :loading="confirmLoading"
+            @click="handleOutputOk"
+            >更新する</a-button
+          >
+        </div>
+      </a-tab-pane>
+    </a-tabs>
   </a-modal>
 </template>
 <script>
@@ -168,6 +209,37 @@ export default {
           summary: "",
           user_id: "",
         },
+      },
+      rules: {
+        category_ids: [
+          {
+            type: "array",
+            required: true,
+            message: "カテゴリは必ず選択してください",
+            trigger: "change",
+          },
+        ],
+        "achievement.input_time": [
+          {
+            required: true,
+            message: "所要時間は必ず入力してください",
+            trigger: "change",
+          },
+        ],
+        "achievement.output_time": [
+          {
+            required: true,
+            message: "所要時間は必ず入力してください",
+            trigger: "change",
+          },
+        ],
+        "achievement.reference_url": [
+          {
+            type: "url",
+            message: "正しい形式で入力してください",
+            trigger: "change",
+          },
+        ],
       },
     };
   },
@@ -299,28 +371,77 @@ export default {
       let now = moment(new Date());
       return now.format("YYYY/MM/DD") == date;
     },
-    handleOk(e) {
-      this.confirmLoading = true;
-      let self = this;
-      Promise.all([
-        this.updateTodo(),
-        this.updateInput(this.getUserId),
-        this.updateOutput(this.getUserId),
-      ])
-        .then((responses) => {})
-        .catch((e) => {
-          console.log(e);
-        })
-        .finally(() => {
-          setTimeout(() => {
-            self.confirmLoading = false;
-            self.$store.commit("togglePerformanceModal");
-            self.$store.commit("toggleAlert");
+    async handleTodoOk(e) {
+      try {
+        this.confirmLoading = true;
+        let self = this;
+        Promise.all([this.updateTodo()])
+          .then((responses) => {})
+          .catch((e) => {
+            console.log(e);
+          })
+          .finally(() => {
             setTimeout(() => {
+              self.confirmLoading = false;
               self.$store.commit("toggleAlert");
-            }, 3500);
-          }, 2000);
-        });
+              setTimeout(() => {
+                self.$store.commit("toggleAlert");
+              }, 3500);
+            }, 2000);
+          });
+      } catch {
+        return;
+      }
+    },
+    async handleInputOk(e) {
+      try {
+        // エラーチェック
+        await this.$refs.inputForm.validate();
+        // エラーがない場合
+        this.confirmLoading = true;
+        let self = this;
+        Promise.all([this.updateInput(this.getUserId)])
+          .then((responses) => {})
+          .catch((e) => {
+            console.log(e);
+          })
+          .finally(() => {
+            setTimeout(() => {
+              self.confirmLoading = false;
+              self.$store.commit("toggleAlert");
+              setTimeout(() => {
+                self.$store.commit("toggleAlert");
+              }, 3500);
+            }, 2000);
+          });
+      } catch {
+        return;
+      }
+    },
+    async handleOutputOk(e) {
+      try {
+        // エラーチェック
+        await this.$refs.outputForm.validate();
+        // エラーがない場合
+        this.confirmLoading = true;
+        let self = this;
+        Promise.all([this.updateOutput(this.getUserId)])
+          .then((responses) => {})
+          .catch((e) => {
+            console.log(e);
+          })
+          .finally(() => {
+            setTimeout(() => {
+              self.confirmLoading = false;
+              self.$store.commit("toggleAlert");
+              setTimeout(() => {
+                self.$store.commit("toggleAlert");
+              }, 3500);
+            }, 2000);
+          });
+      } catch {
+        return;
+      }
     },
     handleCancel(e) {
       this.$store.commit("togglePerformanceModal");
@@ -334,10 +455,16 @@ export default {
     },
     setInputCategories(val) {
       this.inputForm.category_ids = [];
+      if (val.length == 0) {
+        return;
+      }
       val.split(",").forEach((v) => this.inputForm.category_ids.push(v));
     },
     setOutputCategories(val) {
       this.outputForm.category_ids = [];
+      if (val.length == 0) {
+        return;
+      }
       val.split(",").forEach((v) => this.outputForm.category_ids.push(v));
     },
     // 「xx:xx」形式（文字列）→時間（数値）
@@ -392,3 +519,8 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.modal-footer {
+  margin-left: 330px;
+}
+</style>

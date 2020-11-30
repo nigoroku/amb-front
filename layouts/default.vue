@@ -80,7 +80,7 @@ body {
   width: 80%;
   left: 240px;
   top: 55px;
-  z-index: 100;
+  z-index: 99999;
 }
 
 .top-enter-active,
