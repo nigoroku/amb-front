@@ -23,22 +23,35 @@
       >
         <a-list-item
           slot="renderItem"
-          key="item.account_name"
+          key="item.achievement_id"
           slot-scope="item"
         >
           <template v-for="{ icon, text } in actions" slot="actions">
-            <span :key="icon">
-              <font-awesome-icon :icon="icon" style="margin-right: 8px" />
-              {{ text }}
+            <span :key="icon" @click="changeAction(text, item)">
+              <font-awesome-icon
+                :icon="icon"
+                v-bind:class="bindActiveClass(text, item)"
+                style="margin-right: 8px"
+              />
+              {{ text + " " + countAction(text, item) }}
             </span>
           </template>
-          <a-list-item-meta :description="item.introduction">
-            <a slot="title" :href="item.href">{{ item.account_name }}</a>
-            <a-avatar slot="avatar" :src="item.avatar" />
-          </a-list-item-meta>
+          <div style="display: flex">
+            <a-list-item-meta>
+              <a slot="title" :href="item.href">{{ item.account_name }}</a>
+              <a-avatar slot="avatar" :src="item.avatar" />
+            </a-list-item-meta>
+            <h4 style="color: #949494">{{ item.date }}に登録</h4>
+          </div>
+          <div style="margin-bottom: 10px">
+            <a-tag
+              v-for="c in item.categories"
+              :key="c.category_id"
+              :color="c.color_code"
+              >{{ c.name }}</a-tag
+            >
+          </div>
           <div v-if="item.summary">
-            <h4 style="font-weight: bold">{{ item.date }}のアウトプット</h4>
-
             <p>{{ item.summary }}</p>
           </div>
           <div v-if="item.output_page">
@@ -61,6 +74,7 @@
 </template>
 <script>
 import moment from "moment";
+import { mapGetters } from "vuex";
 
 export default {
   layout: "timeline",
@@ -68,6 +82,7 @@ export default {
     return {
       listData: [],
       searchedList: [],
+      selectedActions: [],
       search_text: "",
       pagination: {
         onChange: (page) => {
@@ -76,38 +91,66 @@ export default {
         pageSize: 10,
       },
       actions: [
-        { icon: "thumbs-up", text: "LGTM" },
-        { icon: "layer-group", text: "ストック" },
+        { id: "1", icon: "thumbs-up", text: "LGTM" },
+        { id: "2", icon: "layer-group", text: "ストック" },
       ],
     };
   },
+  computed: {
+    ...mapGetters(["getUserId"]),
+  },
   mounted: function () {
     let self = this;
+    // ユーザーに紐づく選択済みアクションを取得する
     this.$http(process.env.boadListApiEndpoit)
-      .get("/api/v1/boad/list")
+      .get("/api/v1/timeline/output/selected_actions?user_id=" + this.getUserId)
       .then(function (response) {
-        let boad_list = response.data.boad_list;
-        boad_list.forEach((l) => {
-          let list = {};
-          let user = l.user;
-          let output = l.output_list;
+        self.selectedActions = response.data.selected_actions;
+      })
+      .catch(function () {})
+      .finally(function () {});
+
+    // タイムライン情報取得
+    this.$http(process.env.boadListApiEndpoit)
+      .get("/api/v1/timeline/output")
+      .then(function (response) {
+        let timeline = response.data.timeline;
+
+        timeline.forEach((l) => {
+          let line = l;
           let output_page = l.output_page_summary;
-          list.account_name = user.account_name;
-          list.introduction = user.introduction;
-          if (output != null) {
-            list.summary = output.summary;
-            list.date = moment(output.created_at).format("YYYY/MM/DD");
+          line.date = moment(l.created_at).format("YYYY/MM/DD");
+
+          // ログインユーザーのLGTMアクションが行われているかどうか設定
+          if (self.selectedActions != null) {
+            line.lgtm = self.selectedActions
+              .filter((a) => a.action_type == "1")
+              .some((a) => a.output_achievement_id == line.achievement_id);
+            // ログインユーザーのストックアクションが行われているかどうか設定
+            line.stock = self.selectedActions
+              .filter((a) => a.action_type == "2")
+              .some((a) => a.output_achievement_id == line.achievement_id);
           }
+
+          // アクションタイプのカウント数を設定する
+          if (line.action_types != null) {
+            line.lgtmCount = line.action_types.filter((a) => a == "1").length;
+            line.stockCount = line.action_types.filter((a) => a == "2").length;
+          } else {
+            line.lgtmCount = 0;
+            line.stockCount = 0;
+          }
+
           if (output_page.image_url) {
-            list.output_page = output_page;
+            line.output_page = output_page;
           }
 
           // 顔写真の読み込み
-          if (user.account_img != null) {
+          if (l.account_img != null) {
             var reader = new FileReader();
             reader.onload = function (e) {
-              list.avatar = e.target.result;
-              self.listData.push(list);
+              line.avatar = e.target.result;
+              self.listData.push(line);
             };
 
             var createFile4Base64 = function (base64, name, content_type) {
@@ -119,35 +162,88 @@ export default {
               return new File([buffer.buffer], name, { type: content_type });
             };
 
-            let file = createFile4Base64(
-              user.account_img,
-              "tmp",
-              user.content_type
-            );
+            let file = createFile4Base64(l.account_img, "tmp", l.content_type);
 
             // ファイル読み込みを実行
             reader.readAsDataURL(file);
           } else {
-            self.listData.push(list);
+            self.listData.push(line);
           }
-          // 検索用のリストを別途保持する
-          self.searchedList = self.listData;
         });
+
+        // 検索用のリストを別途保持する
+        self.searchedList = self.listData;
       })
       .catch(function () {})
       .finally(function () {});
   },
   methods: {
     onSearch(e) {
-      console.log(e);
       let val = this.search_text;
       this.searchedList = this.listData.filter(
         (l) =>
           (l.account_name != null && l.account_name.includes(val)) ||
           (l.introduction != null && l.introduction.includes(val)) ||
           (l.summary != null && l.summary.includes(val)) ||
+          (l.categories != null &&
+            l.categories.map((c) => c.name).includes(val)) ||
           (l.date && l.date.includes(val))
       );
+    },
+    bindActiveClass(text, line) {
+      if (text == "LGTM") {
+        return line.lgtm ? "active-action" : "";
+      } else if (text == "ストック") {
+        return line.stock ? "active-action" : "";
+      }
+      return "";
+    },
+    changeAction(text, line) {
+      if (text == "LGTM") {
+        line.lgtm = !line.lgtm;
+        if (line.lgtm) {
+          line.lgtmCount++;
+        } else {
+          line.lgtmCount--;
+        }
+        // アクションの更新
+        this.$http(process.env.boadListApiEndpoit)
+          .post("/api/v1/timeline/output/update_action", {
+            user_id: this.getUserId,
+            action_type: "1",
+            insert: line.lgtm,
+            achievement_id: line.achievement_id,
+          })
+          .then(function (response) {})
+          .catch(function () {})
+          .finally(function () {});
+      } else if (text == "ストック") {
+        line.stock = !line.stock;
+        if (line.stock) {
+          line.stockCount++;
+        } else {
+          line.stockCount--;
+        }
+        // アクションの更新
+        this.$http(process.env.boadListApiEndpoit)
+          .post("/api/v1/timeline/output/update_action", {
+            user_id: this.getUserId,
+            action_type: "2",
+            insert: line.stock,
+            achievement_id: line.achievement_id,
+          })
+          .then(function (response) {})
+          .catch(function () {})
+          .finally(function () {});
+      }
+    },
+    countAction(text, line) {
+      if (text == "LGTM") {
+        return line.lgtmCount;
+      } else if (text == "ストック") {
+        return line.stockCount;
+      }
+      return 0;
     },
   },
 };
@@ -186,5 +282,9 @@ export default {
   border-radius: 50%;
   background-position: left top;
   border: 2px solid #f3f3f3;
+}
+
+.active-action {
+  color: #2cbe4e;
 }
 </style>
