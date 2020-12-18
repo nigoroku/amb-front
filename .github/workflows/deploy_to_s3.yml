@@ -38,10 +38,10 @@ jobs:
 
       - name: Genarate files
         env:
-          VUE_APP_USER_API_ENDPOIT: 'https://ambitious.eks-nigoroku.net:8081'
-          VUE_APP_TODO_API_ENDPOIT: 'https://ambitious.eks-nigoroku.net:8082'
-          VUE_APP_ACHIEVEMENT_API_ENDPOIT: 'https://ambitious.eks-nigoroku.net:8083'
-          VUE_APP_BOADLIST_API_ENDPOIT: 'https://ambitious.eks-nigoroku.net:8084'
+          VUE_APP_USER_API_ENDPOIT: 'https://ambitious.eks-nigoroku.net'
+          VUE_APP_TODO_API_ENDPOIT: 'https://ambitious.eks-nigoroku.net'
+          VUE_APP_ACHIEVEMENT_API_ENDPOIT: 'https://ambitious.eks-nigoroku.net'
+          VUE_APP_BOADLIST_API_ENDPOIT: 'https://ambitious.eks-nigoroku.net'
         run: yarn generate
 
       - name: Upload dist files to S3
