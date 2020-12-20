@@ -115,20 +115,23 @@ export default {
       .get("/api/v1/timeline/input")
       .then(function (response) {
         let timeline = response.data.timeline;
+        console.log(timeline);
 
         timeline.forEach((l) => {
           let line = l;
           let input_page = l.input_page_summary;
           line.date = moment(l.created_at).format("YYYY/MM/DD");
 
-          // ログインユーザーのLGTMアクションが行われているかどうか設定
-          line.lgtm = self.selectedActions
-            .filter((a) => a.action_type == "1")
-            .some((a) => a.input_achievement_id == line.achievement_id);
-          // ログインユーザーのストックアクションが行われているかどうか設定
-          line.stock = self.selectedActions
-            .filter((a) => a.action_type == "2")
-            .some((a) => a.input_achievement_id == line.achievement_id);
+          if (self.selectedActions != null) {
+            // ログインユーザーのLGTMアクションが行われているかどうか設定
+            line.lgtm = self.selectedActions
+              .filter((a) => a.action_type == "1")
+              .some((a) => a.input_achievement_id == line.achievement_id);
+            // ログインユーザーのストックアクションが行われているかどうか設定
+            line.stock = self.selectedActions
+              .filter((a) => a.action_type == "2")
+              .some((a) => a.input_achievement_id == line.achievement_id);
+          }
 
           // アクションタイプのカウント数を設定する
           if (line.action_types != null) {

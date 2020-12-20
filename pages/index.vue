@@ -163,7 +163,7 @@ export default {
 
 .title {
   color: white;
-  font-size: 50px!important;
+  font-size: 50px !important;
 }
 .wrapper {
   background: -webkit-linear-gradient(top left, #2b2b2b 0%, #100f0f 100%);
