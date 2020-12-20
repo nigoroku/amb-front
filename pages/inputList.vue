@@ -68,13 +68,14 @@
             </a>
           </div>
         </a-list-item>
+        <a-empty v-show="!loading && searchedList.length == 0" />
       </a-list>
     </div>
   </div>
 </template>
 <script>
 import moment from "moment";
-import { mapGetters } from "vuex";
+import { mapState, mapGetters } from "vuex";
 
 export default {
   layout: "timeline",
@@ -97,9 +98,14 @@ export default {
     };
   },
   computed: {
+    ...mapState(["loading"]),
     ...mapGetters(["getUserId"]),
   },
   mounted: function () {
+    this.$nextTick(() => {
+      this.$nuxt.$loading.start();
+    });
+
     let self = this;
     // ユーザーに紐づく選択済みアクションを取得する
     this.$http(process.env.boadListApiEndpoit)
@@ -115,15 +121,14 @@ export default {
       .get("/api/v1/timeline/input")
       .then(function (response) {
         let timeline = response.data.timeline;
-        console.log(timeline);
 
         timeline.forEach((l) => {
           let line = l;
           let input_page = l.input_page_summary;
           line.date = moment(l.created_at).format("YYYY/MM/DD");
 
+          // ログインユーザーのLGTMアクションが行われているかどうか設定
           if (self.selectedActions != null) {
-            // ログインユーザーのLGTMアクションが行われているかどうか設定
             line.lgtm = self.selectedActions
               .filter((a) => a.action_type == "1")
               .some((a) => a.input_achievement_id == line.achievement_id);
@@ -174,6 +179,8 @@ export default {
 
         // 検索用のリストを別途保持する
         self.searchedList = self.listData;
+        // loading を非表示にする
+        self.$nuxt.$loading.finish();
       })
       .catch(function () {})
       .finally(function () {});
@@ -207,6 +214,7 @@ export default {
         } else {
           line.lgtmCount--;
         }
+
         // アクションの更新
         this.$http(process.env.boadListApiEndpoit)
           .post("/api/v1/timeline/input/update_action", {
@@ -225,6 +233,7 @@ export default {
         } else {
           line.stockCount--;
         }
+
         // アクションの更新
         this.$http(process.env.boadListApiEndpoit)
           .post("/api/v1/timeline/input/update_action", {

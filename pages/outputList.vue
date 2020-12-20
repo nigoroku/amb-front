@@ -68,13 +68,14 @@
             </a>
           </div>
         </a-list-item>
+        <a-empty v-show="!loading && searchedList.length == 0" />
       </a-list>
     </div>
   </div>
 </template>
 <script>
 import moment from "moment";
-import { mapGetters } from "vuex";
+import { mapState, mapGetters } from "vuex";
 
 export default {
   layout: "timeline",
@@ -97,9 +98,14 @@ export default {
     };
   },
   computed: {
+    ...mapState(["loading"]),
     ...mapGetters(["getUserId"]),
   },
   mounted: function () {
+    this.$nextTick(() => {
+      this.$nuxt.$loading.start();
+    });
+
     let self = this;
     // ユーザーに紐づく選択済みアクションを取得する
     this.$http(process.env.boadListApiEndpoit)
@@ -173,6 +179,8 @@ export default {
 
         // 検索用のリストを別途保持する
         self.searchedList = self.listData;
+        // loading を非表示にする
+        self.$nuxt.$loading.finish();
       })
       .catch(function () {})
       .finally(function () {});

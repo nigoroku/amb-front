@@ -15,7 +15,8 @@ export const state = () => ({
       details: []
     }
   ],
-  publicUserId: ""
+  publicUserId: "",
+  loading: true
 });
 
 export const getters = {
@@ -28,6 +29,9 @@ export const getters = {
   },
   getPublicUserId: state => {
     return state.publicUserId;
+  },
+  getLoading: state => {
+    return state.loading;
   }
 };
 
@@ -37,6 +41,9 @@ export const mutations = {
   },
   setAuth(state, auth) {
     state.auth = auth;
+  },
+  setLoading(state, loading) {
+    state.loading = loading;
   },
   setAccountName(state, accountName) {
     state.accountName = accountName;
