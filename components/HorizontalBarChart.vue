@@ -74,6 +74,13 @@ export default {
     };
   },
   mounted() {
+    this.$set(this.datacollection.datasets[0], "data", [
+      this.percents.input_percentag,
+    ]);
+    this.$set(this.datacollection.datasets[1], "data", [
+      this.percents.output_percentag,
+    ]);
+
     this.renderChart(this.datacollection, this.options);
   },
   watch: {

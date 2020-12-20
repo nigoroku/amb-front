@@ -16,7 +16,7 @@ export const state = () => ({
     }
   ],
   publicUserId: "",
-  loading: true
+  loading: false
 });
 
 export const getters = {

@@ -79,6 +79,11 @@ export default {
     };
   },
   mounted() {
+    let labels = this.date_unit.map((c) => c.label);
+    let times = this.date_unit.map((c) => Math.round((c.time / 60) * 10) / 10);
+    this.$set(this.datacollection, "labels", labels);
+    this.$set(this.datacollection.datasets[0], "data", times);
+
     this.renderChart(this.datacollection, this.options);
   },
   watch: {

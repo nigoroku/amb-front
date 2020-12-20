@@ -19,7 +19,7 @@ export default Vue.extend({
   name: "Loading",
   data() {
     return {
-      loadingNow: true,
+      loadingNow: false,
     };
   },
   computed: {

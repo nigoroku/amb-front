@@ -76,6 +76,14 @@ export default {
     };
   },
   mounted() {
+    let categoryNames = this.category_distribution.map((c) => c.category_name);
+    let totalTimes = this.category_distribution.map(
+      (c) => Math.round((c.total_time / 60) * 10) / 10
+    );
+    this.$set(this.datacollection, "labels", categoryNames);
+    this.$set(this.datacollection.datasets[0], "data", totalTimes);
+
+    this.renderChart(this.datacollection, this.options);
     this.renderChart(this.datacollection, this.options);
   },
   watch: {

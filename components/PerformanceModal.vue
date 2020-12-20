@@ -32,7 +32,6 @@
                     >{{ td.content }}</a-checkbox
                   >
                 </div>
-                <hr />
               </a-row>
             </a-form-model-item>
           </a-form-model>
