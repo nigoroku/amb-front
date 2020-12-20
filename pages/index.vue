@@ -95,7 +95,6 @@ export default {
           password: this.password,
         })
         .then(function (response) {
-          console.log(response);
           if (response.status != "200") {
             return;
           }
@@ -104,7 +103,7 @@ export default {
           };
 
           let payLoad = auth.accessToken.split(".")[1];
-          let account = JSON.parse(atob(payLoad));
+          let account = JSON.parse(decodeURIComponent(escape(atob(payLoad))));
           let userId = account.id;
           let accountName = account.accountName;
           self.$store.commit("setAuth", auth);
@@ -128,7 +127,6 @@ export default {
           email: gestEmail,
         })
         .then(function (response) {
-          console.log(response.data);
           self.email = gestEmail;
           self.password = response.data.password;
           self.login();
