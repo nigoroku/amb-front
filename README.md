@@ -28,8 +28,7 @@
 ## 利用技術
 
 ### 構成図
-
-
+![Untitled Diagram (8)](https://user-images.githubusercontent.com/72080660/102783682-a978d080-43de-11eb-9742-b8def9fea9c9.png)
 
 ### 言語
 
