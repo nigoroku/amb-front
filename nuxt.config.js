@@ -119,6 +119,12 @@ export default {
         if (route.name === "analytics") {
           route.meta = { page_id: "3" };
         }
+        if (route.name === "mypage") {
+          route.meta = { page_id: "4" };
+        }
+        if (route.name === "public") {
+          route.meta = { page_id: "5" };
+        }
       });
     }
   },
