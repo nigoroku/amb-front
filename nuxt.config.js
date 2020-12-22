@@ -66,7 +66,21 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: ["nuxt-fontawesome", "@nuxtjs/dotenv", "nuxt-clipboard2"],
+  modules: [
+    "nuxt-fontawesome",
+    "@nuxtjs/dotenv",
+    "nuxt-clipboard2",
+    "@nuxtjs/axios",
+    "@nuxtjs/proxy"
+  ],
+  axios: {
+    proxy: true
+  },
+  proxy: {
+    "/api/v1/": {
+      target: "https://ambitious.eks-nigoroku.net/"
+    }
+  },
   dotenv: {
     filename: envPath
   },
