@@ -128,5 +128,8 @@ export default {
       });
     }
   },
+  generate: {
+    crawler: false
+  },
   loading: "@/components/Loading.vue"
 };
