@@ -38,7 +38,7 @@
         </div>
       </a-col>
     </a-row>
-    <a-row>
+    <a-row v-if="total_learning_time != 0">
       <a-col :span="24" class="gutter-top-box"
         ><a-card class="chart-card" style="border-bottom: none">
           <horizontal-bar-chart
@@ -48,7 +48,7 @@
         </a-card>
       </a-col>
     </a-row>
-    <a-row>
+    <a-row v-if="total_learning_time != 0">
       <a-col :span="12" class="gutter-left-box">
         <a-card class="chart-card" style="border-right: none">
           <bar-chart :category_distribution="category_distribution"></bar-chart>
@@ -66,6 +66,15 @@
             <a-select-option value="year"> 年 </a-select-option>
           </a-select>
           <line-chart :date_unit="selected_learning_transition"></line-chart>
+        </a-card>
+      </a-col>
+    </a-row>
+    <a-row v-if="total_learning_time == 0">
+      <a-col :span="24" class="no-data-box">
+        <a-card class="chart-card">
+          <h2>
+            登録された実績はありません。<br />実績が登録されるとグラフが表示されます。
+          </h2>
         </a-card>
       </a-col>
     </a-row>
@@ -139,9 +148,6 @@ export default {
       return (
         Math.round((this.learning_transition.years[11].time / 60) * 10) / 10
       );
-    },
-    shareUrl: function () {
-      return process.env.userApiEndpoit + "/mypage/" + this.shareForm.token;
     },
   },
   created: function () {
@@ -273,18 +279,6 @@ export default {
         this.selected_learning_transition = this.learning_transition.years;
       }
     },
-    createShareURLToken() {
-      let self = this;
-      this.$http(process.env.userApiEndpoit)
-        .get("/api/v1/user/share?user_id=" + self.pub_user_id)
-        .then(function (response) {
-          let token = response.data.share_token;
-          self.shareForm.token = token;
-          self.isShowShareModal = !self.isShowShareModal;
-        })
-        .catch(function () {})
-        .finally(function () {});
-    },
     handleShareOk(e) {
       this.confirmLoading = true;
       const self = this;
@@ -302,10 +296,6 @@ export default {
     },
     handleShareCancel() {
       this.isShowShareModal = !this.isShowShareModal;
-    },
-    onLinkCopy() {
-      this.$copyText(this.shareUrl);
-      this.$message.success("リンクをコピーしました。", 2);
     },
   },
 };
@@ -341,6 +331,19 @@ export default {
 .gutter-right-box {
   padding-left: 5px;
   padding-bottom: 20px;
+}
+.no-data-box {
+  margin-top: 20px;
+  & .chart-card {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    & h2 {
+      color: #b7b7b7;
+    }
+  }
 }
 #total-time {
   font-size: 60px;

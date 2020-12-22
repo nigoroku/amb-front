@@ -2,51 +2,57 @@
   <div class="wrapper">
     <div class="container">
       <h1 class="title">Ambitious Engneering</h1>
-      <validation-observer ref="obs" v-slot="{ handleSubmit, invalid }">
-        <form id="login-form" v-if="show" @submit.prevent="handleSubmit(login)">
-          <validation-provider
-            rules="required|email"
-            :name="$t('login.email')"
-            v-slot="slotProps"
+      <div style="margin: auto">
+        <validation-observer ref="obs" v-slot="{ handleSubmit, invalid }">
+          <form
+            id="login-form"
+            v-if="show"
+            @submit.prevent="handleSubmit(login)"
           >
-            <a-form-item
-              hasFeedback
-              :validateStatus="resolveState(slotProps)"
-              :help="slotProps.errors[0]"
+            <validation-provider
+              rules="required|email"
+              :name="$t('login.email')"
+              v-slot="slotProps"
             >
-              <a-input
-                type="email"
-                placeholder="enter your email address..."
-                v-model="email"
-              />
-            </a-form-item>
-          </validation-provider>
-          <validation-provider
-            v-slot="slotProps"
-            rules="required|min:4"
-            :name="$t('login.password')"
-          >
-            <a-form-item
-              hasFeedback
-              :validateStatus="resolveState(slotProps)"
-              :help="slotProps.errors[0]"
+              <a-form-item
+                hasFeedback
+                :validateStatus="resolveState(slotProps)"
+                :help="slotProps.errors[0]"
+              >
+                <a-input
+                  type="email"
+                  placeholder="enter your email address..."
+                  v-model="email"
+                />
+              </a-form-item>
+            </validation-provider>
+            <validation-provider
+              v-slot="slotProps"
+              rules="required|min:4"
+              :name="$t('login.password')"
             >
-              <a-input
-                type="password"
-                placeholder="enter password..."
-                v-model="password"
-              />
-            </a-form-item>
-          </validation-provider>
-          <button id="login-button" @click="login" :disabled="invalid">
-            <font-awesome-icon icon="sign-in-alt" /> Log in
-          </button>
-          <hr :style="{ marginTop: '20px', marginBottom: '20px' }" />
-          <button @click="gestLogin" id="gest-login-button">
-            <font-awesome-icon icon="sign-in-alt" /> Gest Login
-          </button>
-        </form>
-      </validation-observer>
+              <a-form-item
+                hasFeedback
+                :validateStatus="resolveState(slotProps)"
+                :help="slotProps.errors[0]"
+              >
+                <a-input
+                  type="password"
+                  placeholder="enter password..."
+                  v-model="password"
+                />
+              </a-form-item>
+            </validation-provider>
+            <button id="login-button" @click="login" :disabled="invalid">
+              <font-awesome-icon icon="sign-in-alt" /> Log in
+            </button>
+          </form>
+        </validation-observer>
+        <hr class="border-line" />
+        <button @click="gestLogin" id="gest-login-button">
+          <font-awesome-icon icon="sign-in-alt" /> Gest Login
+        </button>
+      </div>
     </div>
     <ul class="bg-bubbles">
       <li></li>
@@ -193,10 +199,6 @@ export default {
   transition: 0.5s;
   flex-flow: wrap;
 
-  & > span {
-    margin: auto;
-  }
-
   & h1 {
     width: 400px;
     font-size: 40px;
@@ -243,33 +245,46 @@ export default {
       color: white;
     }
   }
+}
 
-  #login-button,
-  #gest-login-button {
-    appearance: none;
-    outline: 0;
-    background-color: #00000075;
-    border: 1px solid #fff;
-    color: #ffffff;
-    border-radius: 3px;
-    width: 350px;
-    cursor: pointer;
-    font-size: 18px;
-    transition-duration: 0.25s;
-    padding: 10px 15px;
+#login-button,
+#gest-login-button {
+  appearance: none;
+  outline: 0;
+  background-color: #00000075;
+  border: 1px solid #fff;
+  color: #ffffff;
+  border-radius: 3px;
+  width: 350px;
+  cursor: pointer;
+  font-size: 18px;
+  transition-duration: 0.25s;
+  padding: 10px 15px;
+  z-index: 99;
 
-    &:hover {
-      color: #000;
-      background-color: rgb(245, 247, 249);
-    }
-
-    & a {
-      padding: 8px 15px;
-      width: 100%;
-      display: block;
-      color: #53e3a6;
-    }
+  &:hover {
+    color: #000;
+    background-color: rgb(245, 247, 249);
   }
+
+  & a {
+    padding: 8px 15px;
+    width: 100%;
+    display: block;
+    color: #53e3a6;
+  }
+}
+
+#gest-login-button {
+  position: relative;
+}
+
+.border-line {
+  margin-top: 0px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid white;
+  border-top: none;
+  width: 350px;
 }
 
 .bg-bubbles {
