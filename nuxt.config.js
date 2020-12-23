@@ -66,21 +66,7 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: [
-    "nuxt-fontawesome",
-    "@nuxtjs/dotenv",
-    "nuxt-clipboard2",
-    "@nuxtjs/axios",
-    "@nuxtjs/proxy"
-  ],
-  axios: {
-    proxy: true
-  },
-  proxy: {
-    "/api/v1/": {
-      target: "https://ambitious.eks-nigoroku.net/"
-    }
-  },
+  modules: ["nuxt-fontawesome", "@nuxtjs/dotenv", "nuxt-clipboard2"],
   dotenv: {
     filename: envPath
   },
@@ -127,9 +113,6 @@ export default {
         }
       });
     }
-  },
-  generate: {
-    crawler: false
   },
   loading: "@/components/Loading.vue"
 };

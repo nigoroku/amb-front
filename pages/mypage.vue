@@ -325,7 +325,7 @@ export default {
       const self = this;
       this.shareForm.user_id = this.getUserId;
       this.$http(process.env.userApiEndpoit)
-        .post("/api/v1/user/share/regite", this.shareForm)
+        .post("/api/v1/user/share/registe", this.shareForm)
         .then(function (response) {
           self.$message.success("公開URLにアクセスできるようになりました", 2);
         })
