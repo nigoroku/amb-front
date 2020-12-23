@@ -90,6 +90,7 @@ import { mapGetters } from "vuex";
 
 export default {
   layout: "public",
+  middleware: "pageId",
   components: {
     ChartWithAnnotation,
     LineChart,
