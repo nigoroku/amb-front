@@ -152,11 +152,12 @@ export default {
   },
   created: function () {
     let self = this;
+    console.log(this.$route.params);
+    console.log(this.$route.query.token);
     console.log(this.$route.fullPath);
     this.$http(process.env.userApiEndpoit)
       .get("/api/v1/user" + this.$route.fullPath)
       .then(function (response) {
-        console.log("test");
         let userId = response.data.user_id;
         if (userId != null && userId != "") {
           self.$store.commit("setPublicUserId", { publicUserId: userId });
