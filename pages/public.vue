@@ -152,6 +152,7 @@ export default {
   },
   created: function () {
     let self = this;
+    console.log(this.$route.fullPath);
     this.$http(process.env.userApiEndpoit)
       .get("/api/v1/user" + this.$route.fullPath)
       .then(function (response) {
