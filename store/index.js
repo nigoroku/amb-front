@@ -117,6 +117,7 @@ export const actions = {
   nuxtServerInit({ commit }, { req }) {
     let auth = null;
     let accountName = null;
+    console.log(req);
     if (typeof req === "undefined" || typeof req.headers === "undefined") {
       return;
     }
