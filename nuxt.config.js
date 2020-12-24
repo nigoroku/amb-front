@@ -6,7 +6,7 @@ export default {
    ** Nuxt rendering mode
    ** See https://nuxtjs.org/api/configuration-mode
    */
-  mode: "universal",
+  mode: "spa",
   /*
    ** Nuxt target
    ** See https://nuxtjs.org/api/configuration-target
@@ -48,6 +48,7 @@ export default {
    ** https://nuxtjs.org/guide/plugins
    */
   plugins: [
+    { src: "~/plugins/init-client.js", ssr: false },
     "@/plugins/antd-ui",
     "@/plugins/http",
     "@/plugins/constants",
@@ -69,6 +70,10 @@ export default {
   modules: ["nuxt-fontawesome", "@nuxtjs/dotenv", "nuxt-clipboard2"],
   dotenv: {
     filename: envPath
+  },
+  axios: {
+    baseURL: process.env.VUE_APP_USER_API_ENDPOIT,
+    credentials: true
   },
   build: {
     loaders: {

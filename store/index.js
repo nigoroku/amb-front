@@ -1,4 +1,7 @@
 const cookieparser = process.server ? require("cookieparser") : undefined;
+const Cookie = process.client ? require("js-cookie") : undefined;
+
+import Vue from "vue";
 
 export const state = () => ({
   currentPage: "1",
@@ -117,7 +120,6 @@ export const actions = {
   nuxtServerInit({ commit }, { req }) {
     let auth = null;
     let accountName = null;
-    console.log(req);
     if (typeof req === "undefined" || typeof req.headers === "undefined") {
       return;
     }
@@ -134,5 +136,10 @@ export const actions = {
     }
     commit("setAuth", auth);
     commit("setAccountName", accountName);
+  },
+  async nuxtClientInit({ commit, state }, { app }) {
+    let auth = Cookie.get("auth");
+    console.log(JSON.parse(auth));
+    commit("setAuth", JSON.parse(auth));
   }
 };
