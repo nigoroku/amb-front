@@ -146,6 +146,7 @@ export const actions = {
   },
   async nuxtClientInit({ commit, state }, { app }) {
     // 直接URLアクセスを考慮して、routeを保持する
+    console.log(app.context.route);
     commit("setFullPath", app.context.route.fullPath);
     let auth = Cookie.get("auth");
     if (auth == null || typeof auth == "undefined") {

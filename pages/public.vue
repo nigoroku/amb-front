@@ -153,6 +153,8 @@ export default {
   },
   created: function () {
     let self = this;
+    console.log(this.getPublicUserId);
+    console.log(this.getFullPath);
     this.$http(process.env.userApiEndpoit)
       .get("/api/v1/user" + this.getFullPath)
       .then(function (response) {
