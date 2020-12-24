@@ -126,7 +126,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["getPublicUserId"]),
+    ...mapGetters(["getPublicUserId", "getFullPath"]),
     calcWeekTotalTime: function () {
       let times = this.learning_transition.days.map((l) => l.time);
       let result = times.reduce(function (prev, current, i, arr) {
@@ -153,10 +153,8 @@ export default {
   },
   created: function () {
     let self = this;
-    console.log(this.$route);
-    console.log(this.$store);
     this.$http(process.env.userApiEndpoit)
-      .get("/api/v1/user" + this.$route.fullPath)
+      .get("/api/v1/user" + this.getFullPath)
       .then(function (response) {
         let userId = response.data.user_id;
         if (userId != null && userId != "") {
