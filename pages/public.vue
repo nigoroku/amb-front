@@ -151,6 +151,9 @@ export default {
       );
     },
   },
+  async fetch({ store, params }) {
+    console.log(params);
+  },
   created: function () {
     let self = this;
     console.log(this.getPublicUserId);
