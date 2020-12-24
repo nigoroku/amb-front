@@ -139,7 +139,9 @@ export const actions = {
   },
   async nuxtClientInit({ commit, state }, { app }) {
     let auth = Cookie.get("auth");
-    console.log(JSON.parse(auth));
+    if (auth == null || typeof auth == "undefined") {
+      return;
+    }
     commit("setAuth", JSON.parse(auth));
   }
 };
