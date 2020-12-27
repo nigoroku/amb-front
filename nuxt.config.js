@@ -100,23 +100,29 @@ export default {
   },
   router: {
     trailingSlash: true,
+    middleware: "redirect",
     extendRoutes(routes, resolve) {
-      routes.forEach(route => {
-        if (route.name === "inputList") {
-          route.meta = { page_id: "1" };
-        }
-        if (route.name === "outputList") {
-          route.meta = { page_id: "2" };
-        }
-        if (route.name === "analytics") {
-          route.meta = { page_id: "3" };
-        }
-        if (route.name === "mypage") {
-          route.meta = { page_id: "4" };
-        }
-        if (route.name === "public") {
-          route.meta = { page_id: "5" };
-        }
+      // routes.forEach(route => {
+      //   if (route.name === "inputList") {
+      //     route.meta = { page_id: "1" };
+      //   }
+      //   if (route.name === "outputList") {
+      //     route.meta = { page_id: "2" };
+      //   }
+      //   if (route.name === "analytics") {
+      //     route.meta = { page_id: "3" };
+      //   }
+      //   if (route.name === "mypage") {
+      //     route.meta = { page_id: "4" };
+      //   }
+      //   if (route.name === "public") {
+      //     route.meta = { page_id: "5" };
+      //   }
+      // });
+      routes.push({
+        name: "notfound",
+        path: "*",
+        component: resolve(__dirname, "pages/notfound.vue")
       });
     }
   },

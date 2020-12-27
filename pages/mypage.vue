@@ -198,7 +198,9 @@ export default {
       );
     },
     shareUrl: function () {
-      return process.env.frontEndpoit + "/public?token=" + this.shareForm.token;
+      return (
+        process.env.frontEndpoit + "/public/?token=" + this.shareForm.token
+      );
     },
   },
   mounted: function () {

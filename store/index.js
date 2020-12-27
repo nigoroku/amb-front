@@ -9,7 +9,7 @@ export const state = () => ({
   isShowPerformanceModal: false,
   isShowAlert: false,
   auth: null,
-  fullPath: null,
+  publicToken: null,
   accountName: "",
   locales: ["en", "ja"],
   locale: "ja",
@@ -37,8 +37,8 @@ export const getters = {
   getLoading: state => {
     return state.loading;
   },
-  getFullPath: state => {
-    return state.fullPath;
+  getPublicToken: state => {
+    return state.publicToken;
   }
 };
 
@@ -49,8 +49,8 @@ export const mutations = {
   setAuth(state, auth) {
     state.auth = auth;
   },
-  setFullPath(state, fullPath) {
-    state.fullPath = fullPath;
+  setPublicToken(state, publicToken) {
+    state.publicToken = publicToken;
   },
   setLoading(state, loading) {
     state.loading = loading;
@@ -146,8 +146,7 @@ export const actions = {
   },
   async nuxtClientInit({ commit, state }, { app }) {
     // 直接URLアクセスを考慮して、routeを保持する
-    console.log(app);
-    commit("setFullPath", app.context.route.fullPath);
+    commit("setPublicToken", app.context.route.query.token);
     let auth = Cookie.get("auth");
     if (auth == null || typeof auth == "undefined") {
       return;
