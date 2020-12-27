@@ -151,7 +151,7 @@ export default {
       );
     },
   },
-  async asyncData({ params }) {
+  asyncData({ params }) {
     console.log(params);
   },
   created: function () {

@@ -119,5 +119,8 @@ export default {
       });
     }
   },
+  generate: {
+    routes: ["/public", "/inputList"]
+  },
   loading: "@/components/Loading.vue"
 };
