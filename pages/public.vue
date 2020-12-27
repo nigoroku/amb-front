@@ -165,11 +165,11 @@ export default {
         if (userId != null && userId != "") {
           self.$store.commit("setPublicUserId", { publicUserId: userId });
         } else {
-          // self.$router.push("/notfound");
+          // self.$router.push("/notfound/");
         }
       })
       .catch(function () {
-        // self.$router.push("/notfound");
+        // self.$router.push("/notfound/");
       })
       .finally(function () {});
   },

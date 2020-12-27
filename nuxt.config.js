@@ -99,6 +99,7 @@ export default {
     ]
   },
   router: {
+    trailingSlash: true,
     extendRoutes(routes, resolve) {
       routes.forEach(route => {
         if (route.name === "inputList") {
@@ -118,9 +119,6 @@ export default {
         }
       });
     }
-  },
-  generate: {
-    routes: ["/public", "/inputList"]
   },
   loading: "@/components/Loading.vue"
 };

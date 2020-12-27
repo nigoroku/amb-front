@@ -104,7 +104,7 @@ export default {
         })
         .then(function (response) {
           Cookie.set("accountName", account.account_name);
-          self.$router.push("/mypage");
+          self.$router.push("/mypage/");
         })
         .catch(function () {})
         .finally(function () {
@@ -113,7 +113,7 @@ export default {
         });
     },
     handleCancel() {
-      this.$router.push("/mypage");
+      this.$router.push("/mypage/");
     },
     openFile() {
       var clickImg = document.getElementById("accountImg");

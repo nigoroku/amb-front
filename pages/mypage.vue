@@ -8,7 +8,7 @@
           </div>
           <div class="account-info">
             <div style="margin-top: 8px">
-              <nuxt-link to="/account"
+              <nuxt-link to="/account/"
                 ><font-awesome-icon icon="edit" /> 編集する</nuxt-link
               >
             </div>

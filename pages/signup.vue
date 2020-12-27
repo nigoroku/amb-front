@@ -118,7 +118,7 @@ export default {
               Cookie.set("auth", auth);
               Cookie.set("accountName", accountName);
 
-              self.$router.push("/mypage");
+              self.$router.push("/mypage/");
             })
             .catch(function (e) {
               console.log(e);

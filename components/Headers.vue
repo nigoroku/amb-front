@@ -37,10 +37,10 @@
               アウトプット</span
             >
             <a-menu-item key="1">
-              <nuxt-link to="/inputList">インプットタイムライン</nuxt-link>
+              <nuxt-link to="/inputList/">インプットタイムライン</nuxt-link>
             </a-menu-item>
             <a-menu-item key="2">
-              <nuxt-link to="/outputList">アウトプットタイムライン</nuxt-link>
+              <nuxt-link to="/outputList/">アウトプットタイムライン</nuxt-link>
             </a-menu-item>
           </a-sub-menu>
         </a-menu>
@@ -56,7 +56,7 @@
             </a>
             <a-menu slot="overlay">
               <a-menu-item style="padding: 10px 20px">
-                <nuxt-link to="/mypage"
+                <nuxt-link to="/mypage/"
                   ><font-awesome-icon icon="user" /> マイページ
                 </nuxt-link>
               </a-menu-item>
@@ -77,7 +77,7 @@
         </a-menu>
         <a-menu mode="horizontal" v-show="!auth">
           <a-button type="danger" style="margin-top: 15px; margin-right: 20px">
-            <nuxt-link to="/signup">Sign up</nuxt-link>
+            <nuxt-link to="/signup/">Sign up</nuxt-link>
           </a-button>
         </a-menu>
       </div>
