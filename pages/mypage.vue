@@ -17,29 +17,37 @@
           </div>
         </a-card>
       </a-col>
-      <a-col :span="14" style="display: flex">
+      <a-col :span="4">
         <a-card class="no-border">
           <h2>総学習時間</h2>
           <span id="total-time">{{ total_learning_time }}</span
           ><span> 時間</span>
         </a-card>
-        <div class="time-box-list">
-          <a-card class="left-border">
-            <h3>今週の学習時間</h3>
-            <span class="unit-time">{{ calcWeekTotalTime }}</span
-            ><span> 時間</span>
-          </a-card>
-          <a-card class="left-border">
-            <h3>今月の学習時間</h3>
-            <span class="unit-time">{{ calcMonthTotalTime }}</span
-            ><span> 時間</span>
-          </a-card>
-          <a-card class="left-border">
-            <h3>今年の学習時間</h3>
-            <span class="unit-time">{{ calcYearTotalTime }}</span
-            ><span> 時間</span>
-          </a-card>
-        </div>
+      </a-col>
+      <a-col :span="10">
+        <a-row class="time-box-list">
+          <a-col :span="8">
+            <a-card class="left-border">
+              <h3>今週の学習時間</h3>
+              <span class="unit-time">{{ calcWeekTotalTime }}</span
+              ><span> 時間</span>
+            </a-card>
+          </a-col>
+          <a-col :span="8">
+            <a-card class="left-border">
+              <h3>今月の学習時間</h3>
+              <span class="unit-time">{{ calcMonthTotalTime }}</span
+              ><span> 時間</span>
+            </a-card>
+          </a-col>
+          <a-col :span="8">
+            <a-card class="left-border">
+              <h3>今年の学習時間</h3>
+              <span class="unit-time">{{ calcYearTotalTime }}</span
+              ><span> 時間</span>
+            </a-card>
+          </a-col>
+        </a-row>
       </a-col>
       <a-dropdown class="share-dropdown">
         <a class="share-dropdown-link" @click="(e) => e.preventDefault()">
@@ -427,9 +435,7 @@ export default {
   top: 15px;
 }
 .time-box-list {
-  display: flex;
   margin-top: 45px;
-  margin-left: 60px;
 }
 .unit-time {
   font-size: 30px;
