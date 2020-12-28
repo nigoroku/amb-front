@@ -58,11 +58,17 @@
             <a v-bind:href="item.input_page.url" target="_blank">
               <a-card class="ref-link">
                 <div class="ref-link-body">
-                  <div>
+                  <div style="width: 60%">
                     <h3>{{ item.input_page.title }}</h3>
                     <span>{{ item.input_page.description }}</span>
                   </div>
-                  <img v-bind:src="item.input_page.image_url" />
+                  <div
+                    class="page-img-box"
+                    v-bind:style="{
+                      'background-image':
+                        'url(' + item.input_page.image_url + ')',
+                    }"
+                  ></div>
                 </div>
               </a-card>
             </a>
@@ -296,5 +302,12 @@ export default {
 
 .active-action {
   color: #2cbe4e;
+}
+
+.page-img-box {
+  width: 30%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: right;
 }
 </style>
