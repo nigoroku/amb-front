@@ -65,7 +65,7 @@
             <a-form-model-item
               prop="achievement.input_time"
               required
-              label="所要時間"
+              label="所要時間(h)"
             >
               <a-time-picker
                 format="HH:mm"
@@ -122,7 +122,7 @@
             <a-form-model-item
               prop="achievement.output_time"
               required
-              label="所要時間"
+              label="所要時間(h)"
             >
               <a-time-picker
                 format="HH:mm"
