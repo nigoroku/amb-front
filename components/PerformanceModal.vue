@@ -71,6 +71,7 @@
                 format="HH:mm"
                 v-model="inputForm.achievement.input_time"
                 placeholder="select time..."
+                :default-value="moment('00:00', 'HH:mm')"
               ></a-time-picker>
             </a-form-model-item>
             <a-form-model-item
@@ -127,6 +128,7 @@
                 format="HH:mm"
                 v-model="outputForm.achievement.output_time"
                 placeholder="select time..."
+                :default-value="moment('00:00', 'HH:mm')"
               ></a-time-picker>
             </a-form-model-item>
             <a-form-model-item
