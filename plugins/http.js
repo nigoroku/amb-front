@@ -4,7 +4,7 @@ import axios from "axios";
 const http = apiEndpoit =>
   axios.create({
     baseURL: apiEndpoit,
-    timeout: 10000
+    timeout: 100000
   });
 
 Vue.prototype.$http = http;
