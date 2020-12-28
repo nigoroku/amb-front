@@ -17,14 +17,14 @@
           </div>
         </a-card>
       </a-col>
-      <a-col :span="4">
+      <a-col :span="5">
         <a-card class="no-border">
           <h2>総学習時間</h2>
           <span id="total-time">{{ total_learning_time }}</span
           ><span> 時間</span>
         </a-card>
       </a-col>
-      <a-col :span="10">
+      <a-col :span="9">
         <a-row class="time-box-list">
           <a-col :span="8">
             <a-card class="left-border">
